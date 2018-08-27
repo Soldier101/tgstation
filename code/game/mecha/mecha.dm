@@ -913,7 +913,7 @@
 	brainmob.forceMove(src) //should allow relaymove
 	brainmob.reset_perspective(src)
 	brainmob.remote_control = src
-	brainmob.update_canmove()
+	brainmob.update_mobility()
 	brainmob.update_mouse_pointer()
 	icon_state = initial(icon_state)
 	update_icon()

@@ -169,14 +169,17 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 	set category = "Object"
 	set src in oview(1)
 
-	if(!isturf(loc) || usr.stat || usr.restrained() || !usr.canmove)
+	if(!isturf(loc) || usr.stat || usr.restrained())
 		return
 
-	var/turf/T = src.loc
+	if(isliving(usr))
+		var/mob/living/L = usr
+		if(!L.canitem)
+			return
 
-	src.loc = null
-
-	src.loc = T
+	var/turf/T = loc
+	loc = null
+	loc = T
 
 /obj/item/examine(mob/user) //This might be spammy. Remove?
 	..()

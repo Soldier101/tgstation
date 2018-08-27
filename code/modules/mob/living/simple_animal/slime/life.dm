@@ -140,12 +140,12 @@
 			stat = UNCONSCIOUS
 			powerlevel = 0
 			rabid = 0
-			update_canmove()
+			update_mobility()
 			regenerate_icons()
 		else if(stat == UNCONSCIOUS && !stasis)
 			to_chat(src, "<span class='notice'>You wake up from the stasis.</span>")
 			stat = CONSCIOUS
-			update_canmove()
+			update_mobility()
 			regenerate_icons()
 
 	updatehealth()
@@ -278,9 +278,9 @@
 /mob/living/simple_animal/slime/proc/handle_targets()
 	if(Tempstun)
 		if(!buckled) // not while they're eating!
-			canmove = 0
+			canmove = FALSE
 	else
-		canmove = 1
+		canmove = TRUE
 
 	if(attacked > 50)
 		attacked = 50

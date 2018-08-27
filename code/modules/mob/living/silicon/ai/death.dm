@@ -12,7 +12,6 @@
 	cameraFollow = null
 
 	anchored = FALSE //unbolt floorbolts
-	update_canmove()
 	if(eyeobj)
 		eyeobj.setLoc(get_turf(src))
 
@@ -29,7 +28,7 @@
 		if(src.key)
 			O.mode = 2
 			O.update()
-	
+
 	if(istype(loc, /obj/item/aicard))
 		loc.icon_state = "aicard-404"
 

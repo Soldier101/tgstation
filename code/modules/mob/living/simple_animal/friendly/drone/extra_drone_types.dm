@@ -239,5 +239,4 @@
 
 /mob/living/simple_animal/drone/cogscarab/update_canmove()
 	. = ..()
-	if(.)
-		update_icons()
+	update_icons()

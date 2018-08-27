@@ -45,7 +45,7 @@
 	butcher_results = list(/obj/item/reagent_containers/food/snacks/meat/slab/pug = 3)
 	gold_core_spawnable = FRIENDLY_SPAWN
 	collar_type = "pug"
-	
+
 /mob/living/simple_animal/pet/dog/corgi/exoticcorgi
 	name = "Exotic Corgi"
 	desc = "As cute as it is colorful!"

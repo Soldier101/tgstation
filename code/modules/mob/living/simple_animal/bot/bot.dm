@@ -155,11 +155,11 @@
 		path_hud.add_to_hud(src)
 		path_hud.add_hud_to(src)
 
-/mob/living/simple_animal/bot/update_canmove()
+/mob/living/simple_animal/bot/update_mobility()
 	. = ..()
 	if(!on)
-		. = 0
-	canmove = .
+		canmove = FALSE
+		canitem = FALSE
 
 /mob/living/simple_animal/bot/Destroy()
 	if(path_hud)

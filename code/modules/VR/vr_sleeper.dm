@@ -72,7 +72,9 @@
 			SStgui.close_user_uis(occupant, src)
 		..()
 
-/obj/machinery/vr_sleeper/MouseDrop_T(mob/target, mob/user)
+/obj/machinery/vr_sleeper/MouseDrop_T(mob/target, mob/living/user)
+	if(!istype(user))
+		return
 	if(user.stat || user.lying || !Adjacent(user) || !user.Adjacent(target) || !iscarbon(target) || !user.IsAdvancedToolUser())
 		return
 	close_machine(target)

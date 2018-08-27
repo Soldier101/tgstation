@@ -92,11 +92,11 @@
 	else
 		cut_overlay(fire_overlay)
 
-/mob/living/silicon/robot/update_canmove()
+/mob/living/silicon/robot/update_mobility()
 	if(stat || buckled || lockcharge)
-		canmove = 0
+		canmove = FALSE
 	else
-		canmove = 1
+		canmove = TRUE
 	update_transform()
 	update_action_buttons_icon()
-	return canmove
+

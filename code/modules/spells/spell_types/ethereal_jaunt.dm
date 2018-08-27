@@ -40,7 +40,7 @@
 		return
 	mobloc = get_turf(target.loc)
 	jaunt_steam(mobloc)
-	target.canmove = 0
+	target.canmove = FALSE
 	holder.reappearing = 1
 	playsound(get_turf(target), 'sound/magic/ethereal_exit.ogg', 50, 1, -1)
 	sleep(25 - jaunt_in_time)

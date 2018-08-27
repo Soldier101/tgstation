@@ -29,10 +29,12 @@
 /datum/status_effect/incapacitating/knockdown
 	id = "knockdown"
 
-/datum/status_effect/incapacitating/knockdown/tick()
-	if(owner.getStaminaLoss())
-		owner.adjustStaminaLoss(-0.3) //reduce stamina loss by 0.3 per tick, 6 per 2 seconds
+//IMMOBILIZED
+/datum/status_effect/incapacitating/immobilized
+	id = "immobilized"
 
+/datum/status_effect/incapacitating/paralyzed
+	id = "paralyzed"
 
 //UNCONSCIOUS
 /datum/status_effect/incapacitating/unconscious

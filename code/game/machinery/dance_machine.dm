@@ -375,10 +375,8 @@
 		sleep(speed)
 		for(var/i in 1 to speed)
 			M.setDir(pick(GLOB.cardinals))
-			// update resting manually to avoid chat spam
 			for(var/mob/living/carbon/NS in rangers)
-				NS.resting = !NS.resting
-				NS.update_canmove()
+				NS.set_resting(!NS.resting, TRUE)
 		 time--
 
 /obj/machinery/jukebox/disco/proc/dance5(var/mob/living/M)

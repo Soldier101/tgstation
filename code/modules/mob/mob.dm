@@ -887,7 +887,6 @@
 /mob/proc/get_idcard()
 	return
 
-
 /mob/vv_get_dropdown()
 	. = ..()
 	. += "---"
@@ -915,3 +914,5 @@
 
 	var/datum/language_holder/H = get_language_holder()
 	H.open_language_menu(usr)
+
+

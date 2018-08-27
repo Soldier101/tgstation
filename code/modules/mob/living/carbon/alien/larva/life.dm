@@ -22,12 +22,12 @@
 			if(stat == CONSCIOUS)
 				stat = UNCONSCIOUS
 				blind_eyes(1)
-				update_canmove()
+				update_mobility()
 		else
 			if(stat == UNCONSCIOUS)
 				stat = CONSCIOUS
 				resting = 0
 				adjust_blindness(-1)
-				update_canmove()
+				update_mobility()
 	update_damage_hud()
 	update_health_hud()

@@ -649,10 +649,10 @@
 	if(src.connected_ai)
 		connected_ai.connected_robots -= src
 		src.connected_ai = null
-	lawupdate = 0
-	lockcharge = 0
-	canmove = 1
-	scrambledcodes = 1
+	lawupdate = FALSE
+	lockcharge = FALSE
+	canmove = TRUE
+	scrambledcodes = TRUE
 	//Disconnect it's camera so it's not so easily tracked.
 	if(!QDELETED(builtInCamera))
 		QDEL_NULL(builtInCamera)
@@ -682,7 +682,7 @@
 	else
 		clear_alert("locked")
 	lockcharge = state
-	update_canmove()
+	update_mobility()
 
 /mob/living/silicon/robot/proc/SetEmagged(new_state)
 	emagged = new_state
@@ -943,13 +943,13 @@
 			if(stat == CONSCIOUS)
 				stat = UNCONSCIOUS
 				blind_eyes(1)
-				update_canmove()
+				update_mobility()
 				update_headlamp()
 		else
 			if(stat == UNCONSCIOUS)
 				stat = CONSCIOUS
 				adjust_blindness(-1)
-				update_canmove()
+				update_mobility()
 				update_headlamp()
 	diag_hud_set_status()
 	diag_hud_set_health()

@@ -462,7 +462,7 @@
 		sleep(3)
 		if(user)
 			step_away(src,user,15)
-		update_canmove()
+		update_mobility()
 
 /mob/living/simple_animal/slime/pet
 	docile = 1

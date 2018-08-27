@@ -82,9 +82,9 @@
 			Knockdown(40, 1, 1)
 
 		if(leaping)
-			leaping = 0
+			leaping = FALSE
 			update_icons()
-			update_canmove()
+			update_mobility()
 
 
 /mob/living/carbon/alien/humanoid/float(on)

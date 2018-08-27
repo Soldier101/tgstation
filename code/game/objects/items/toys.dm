@@ -727,7 +727,7 @@
 /obj/item/toy/cards/deck/MouseDrop(atom/over_object)
 	. = ..()
 	var/mob/living/M = usr
-	if(!istype(M) || usr.incapacitated() || usr.lying)
+	if(!istype(M) || M.incapacitated() || M.lying)
 		return
 	if(Adjacent(usr))
 		if(over_object == M && loc != M)
@@ -773,9 +773,11 @@
 /obj/item/toy/cards/cardhand/Topic(href, href_list)
 	if(..())
 		return
-	if(usr.stat || !ishuman(usr) || !usr.canmove)
+	if(usr.stat || !ishuman(usr))
 		return
 	var/mob/living/carbon/human/cardUser = usr
+	if(!cardUser.canmove)
+		return
 	var/O = src
 	if(href_list["pick"])
 		if (cardUser.is_holding(src))
@@ -914,8 +916,8 @@
 	else
 		return ..()
 
-/obj/item/toy/cards/singlecard/attack_self(mob/user)
-	if(usr.stat || !ishuman(usr) || !usr.canmove || usr.restrained())
+/obj/item/toy/cards/singlecard/attack_self(mob/living/carbon/human/user)
+	if(!ishuman(user) || !user.canitem)
 		return
 	Flip()
 

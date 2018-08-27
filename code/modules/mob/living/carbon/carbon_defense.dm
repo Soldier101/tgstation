@@ -267,8 +267,7 @@
 		AdjustUnconscious(-60)
 		AdjustSleeping(-100)
 		if(resting)
-			resting = 0
-			update_canmove()
+			set_resting(FALSE)
 
 		playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 

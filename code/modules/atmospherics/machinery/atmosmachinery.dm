@@ -336,7 +336,6 @@ Pipelines + Other Objects -> Pipe network
 	user.canmove = FALSE
 	addtimer(VARSET_CALLBACK(user, canmove, TRUE), 1)
 
-
 /obj/machinery/atmospherics/AltClick(mob/living/L)
 	if(is_type_in_list(src, GLOB.ventcrawl_machinery))
 		L.handle_ventcrawl(src)

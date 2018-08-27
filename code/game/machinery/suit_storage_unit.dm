@@ -178,8 +178,8 @@
 		new /obj/item/stack/sheet/metal (loc, 2)
 	qdel(src)
 
-/obj/machinery/suit_storage_unit/MouseDrop_T(atom/A, mob/user)
-	if(user.stat || user.lying || !Adjacent(user) || !Adjacent(A) || !isliving(A))
+/obj/machinery/suit_storage_unit/MouseDrop_T(atom/A, mob/living/user)
+	if(!istype(user) || user.stat || user.lying || !Adjacent(user) || !Adjacent(A) || !isliving(A))
 		return
 	var/mob/living/target = A
 	if(!state_open)

@@ -346,7 +346,7 @@
 	else
 		if(alert(src, "You sure you want to sleep for a while?", "Sleep", "Yes", "No") == "Yes")
 			SetSleeping(400) //Short nap
-	update_canmove()
+	update_mobility()
 
 /mob/proc/get_contents()
 
@@ -355,18 +355,25 @@
 	set category = "IC"
 
 	if(!resting)
-		resting = TRUE
-		to_chat(src, "<span class='notice'>You are now resting.</span>")
-		update_rest_hud_icon()
-		update_canmove()
+		set_resting(TRUE, FALSE)
 	else
 		if(do_after(src, 10, target = src))
-			to_chat(src, "<span class='notice'>You get up.</span>")
-			resting = FALSE
-			update_rest_hud_icon()
-			update_canmove()
+			set_resting(FALSE, FALSE)
 		else
 			to_chat(src, "<span class='notice'>You fail to get up.</span>")
+
+/mob/living/proc/set_resting(rest, silent = TRUE)
+	if(!silent)
+		if(rest)
+			to_chat(src, "<span class='notice'>You are now resting.</span>")
+		else
+			to_chat(src, "<span class='notice'>You get up.</span>")
+	resting = rest
+	update_resting()
+
+/mob/living/proc/update_resting()
+	update_rest_hud_icon()
+	update_mobility()
 
 //Recursive function to find everything a mob is holding. Really shitty proc tbh.
 /mob/living/get_contents()
@@ -418,7 +425,7 @@
 		stat = UNCONSCIOUS //the mob starts unconscious,
 		blind_eyes(1)
 		updatehealth() //then we check if the mob should wake up.
-		update_canmove()
+		update_mobility()
 		update_sight()
 		clear_alert("not_enough_oxy")
 		reload_fullscreen()
@@ -959,30 +966,27 @@
 
 //Updates canmove, lying and icons. Could perhaps do with a rename but I can't think of anything to describe it.
 //Robots, animals and brains have their own version so don't worry about them
-/mob/living/proc/update_canmove()
-	var/ko = IsKnockdown() || IsUnconscious() || (stat && (stat != SOFT_CRIT || pulledby)) || (has_trait(TRAIT_DEATHCOMA))
-	var/move_and_fall = stat == SOFT_CRIT && !pulledby
-	var/chokehold = pulledby && pulledby.grab_state >= GRAB_NECK
-	var/buckle_lying = !(buckled && !buckled.buckle_lying)
+/mob/living/proc/update_mobility()
+	var/stat_softcrit = stat == SOFT_CRIT
+	var/stat_conscious = (stat == CONSCIOUS) || stat_softcrit
+	var/conscious = !IsUnconscious() && stat_conscious && !has_trait(TRAIT_DEATHCOMA)
+	var/chokehold = pulledby && pulledby.grab_stat >= GRAB_NECK
 	var/has_legs = get_num_legs()
 	var/has_arms = get_num_arms()
 	var/ignore_legs = get_leg_ignore()
-	if(ko || resting || move_and_fall || IsStun() || chokehold)
+	canmove = !IsImmobilized() && !IsStun() && conscious && !IsParalyzed() && (!stat_softcrit || !pulledby) && !chokehold && !IsFrozen() && (has_arms || ignore_legs || has_legs)
+	canstand = conscious && !stat_softcrit && !IsKnockdown() && !chokehold && !IsParalyzed() && has_legs
+	canitem = !IsParalyzed() && !IsStun() && conscious && !chokehold && has_arms
+	if(!canitem || !canstand)
 		drop_all_held_items()
-		unset_machine()
 		if(pulling)
 			stop_pulling()
-	else if(has_legs || ignore_legs)
-		lying = 0
-	if(buckled)
-		lying = 90*buckle_lying
-	else if(!lying)
-		if(resting)
-			fall()
-		else if(ko || move_and_fall || (!has_legs && !ignore_legs) || chokehold)
-			fall(forced = 1)
-	canmove = !(ko || resting || IsStun() || IsFrozen() || chokehold || buckled || (!has_legs && !ignore_legs && !has_arms))
+		unset_machine()
+	lying = !canstand || (buckled && buckled.buckle_lying)
 	density = !lying
+	var/changed = lying == lying_prev
+	if(!lying_prev)
+		fall(!canstand)
 	if(lying)
 		if(layer == initial(layer)) //to avoid special cases like hiding larvas.
 			layer = LYING_MOB_LAYER //so mob lying always appear behind standing mobs
@@ -990,11 +994,10 @@
 		if(layer == LYING_MOB_LAYER)
 			layer = initial(layer)
 	update_transform()
-	if(!lying && lying_prev)
+	if(changed)
 		if(client)
 			client.move_delay = world.time + movement_delay()
 	lying_prev = lying
-	return canmove
 
 /mob/living/proc/AddAbility(obj/effect/proc_holder/A)
 	abilities.Add(A)

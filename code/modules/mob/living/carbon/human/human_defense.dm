@@ -46,7 +46,7 @@
 	if(mind)
 		if(mind.martial_art && !incapacitated(FALSE, TRUE) && mind.martial_art.can_use(src) && mind.martial_art.deflection_chance) //Some martial arts users can deflect projectiles!
 			if(prob(mind.martial_art.deflection_chance))
-				if(!lying && dna && !dna.check_mutation(HULK)) //But only if they're not lying down, and hulks can't do it
+				if(canitem && dna && !dna.check_mutation(HULK)) //But only if they're otherwise able to use items, and hulks can't do it
 					if(mind.martial_art.deflection_chance >= 100) //if they can NEVER be hit, lets clue sec in ;)
 						visible_message("<span class='danger'>[src] deflects the projectile; [p_they()] can't be hit with ranged weapons!</span>", "<span class='userdanger'>You deflect the projectile!</span>")
 					else

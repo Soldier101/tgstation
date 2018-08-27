@@ -354,8 +354,8 @@
 	to_chat(src, "<b>You are now [anchored ? "" : "un"]anchored.</b>")
 	// the message in the [] will change depending whether or not the AI is anchored
 
-/mob/living/silicon/ai/update_canmove() //If the AI dies, mobs won't go through it anymore
-	return 0
+/mob/living/silicon/ai/update_mobility() //If the AI dies, mobs won't go through it anymore
+	return
 
 /mob/living/silicon/ai/proc/ai_cancel_call()
 	set category = "Malfunction"

@@ -322,7 +322,7 @@
 		health = 0
 		icon_state = icon_dead
 		density = FALSE
-		lying = 1
+		set_lying(TRUE)
 		..()
 
 /mob/living/simple_animal/proc/CanAttack(atom/the_target)
@@ -411,17 +411,19 @@
 	else
 		..()
 
-/mob/living/simple_animal/update_canmove(value_otherwise = TRUE)
+/mob/living/simple_animal/update_mobilitiy(value_otherwise = TRUE)
 	if(IsUnconscious() || IsStun() || IsKnockdown() || stat || resting)
 		drop_all_held_items()
 		canmove = FALSE
+		canitem = FALSE
 	else if(buckled)
 		canmove = FALSE
+		canitem = TRUE
 	else
 		canmove = value_otherwise
+		canitem = value_otherwise
 	update_transform()
 	update_action_buttons_icon()
-	return canmove
 
 /mob/living/simple_animal/update_transform()
 	var/matrix/ntransform = matrix(transform) //aka transform.Copy()
