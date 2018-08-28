@@ -205,12 +205,15 @@
 	log_game("[key_name(src)] (job: [src.job ? "[src.job]" : "None"]) committed suicide at [AREACOORD(src)].")
 
 /mob/living/proc/canSuicide()
-	if(stat == CONSCIOUS)
-		return TRUE
-	else if(stat == DEAD)
-		to_chat(src, "You're already dead!")
-	else if(stat == UNCONSCIOUS)
-		to_chat(src, "You need to be conscious to suicide!")
+	switch(stat)
+		if(CONSCIOUS)
+			return TRUE
+		if(SOFT_CRIT)
+			to_chat(src, "You can't commit suicide while in a critical condition!")
+		if(UNCONSCIOUS)
+			to_chat(src, "You need to be conscious to commit suicide!")
+		if(DEAD)
+			to_chat(src, "You're already dead!")
 	return
 
 /mob/living/carbon/canSuicide()

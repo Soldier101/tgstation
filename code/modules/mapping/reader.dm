@@ -2,9 +2,6 @@
 //SS13 Optimized Map loader
 //////////////////////////////////////////////////////////////
 #define SPACE_KEY "space"
-//global datum that will preload variables on atoms instanciation
-GLOBAL_VAR_INIT(use_preloader, FALSE)
-GLOBAL_DATUM_INIT(_preloader, /datum/map_preloader, new)
 
 /datum/grid_set
 	var/xcrd
@@ -19,7 +16,6 @@ GLOBAL_DATUM_INIT(_preloader, /datum/map_preloader, new)
 	var/list/gridSets = list()
 
 	var/list/modelCache
-	var/list/bad_paths
 
 	/// Unoffset bounds. Null on parse failure.
 	var/list/parsed_bounds
@@ -38,13 +34,13 @@ GLOBAL_DATUM_INIT(_preloader, /datum/map_preloader, new)
 
 /// Shortcut function to parse a map and apply it to the world.
 ///
-/// - dmm_file: A .dmm file to load (Required).
-/// - x_offset, y_offset, z_offset: Positions representign where to load the map (Optional).
-/// - cropMap: When true, the map will be cropped to fit the existing world dimensions (Optional).
-/// - measureOnly: When true, no changes will be made to the world (Optional).
-/// - no_changeturf: When true, turf/AfterChange won't be called on loaded turfs
-/// - x_lower, x_upper, y_lower, y_upper: Coordinates (relative to the map) to crop to (Optional).
-/// - placeOnTop: Whether to use turf/PlaceOnTop rather than turf/ChangeTurf (Optional).
+/// - `dmm_file`: A .dmm file to load (Required).
+/// - `x_offset`, `y_offset`, `z_offset`: Positions representign where to load the map (Optional).
+/// - `cropMap`: When true, the map will be cropped to fit the existing world dimensions (Optional).
+/// - `measureOnly`: When true, no changes will be made to the world (Optional).
+/// - `no_changeturf`: When true, [turf/AfterChange] won't be called on loaded turfs
+/// - `x_lower`, `x_upper`, `y_lower`, `y_upper`: Coordinates (relative to the map) to crop to (Optional).
+/// - `placeOnTop`: Whether to use [turf/PlaceOnTop] rather than [turf/ChangeTurf] (Optional).
 /proc/load_map(dmm_file as file, x_offset as num, y_offset as num, z_offset as num, cropMap as num, measureOnly as num, no_changeturf as num, x_lower = -INFINITY as num, x_upper = INFINITY as num, y_lower = -INFINITY as num, y_upper = INFINITY as num, placeOnTop = FALSE as num)
 	var/datum/parsed_map/parsed = new(dmm_file, x_lower, x_upper, y_lower, y_upper, measureOnly)
 	if(parsed.bounds && !measureOnly)
@@ -133,7 +129,7 @@ GLOBAL_DATUM_INIT(_preloader, /datum/map_preloader, new)
 		bounds = null
 	parsed_bounds = bounds
 
-/// Load the parsed map into the world. See /proc/load_map for arguments.
+/// Load the parsed map into the world. See [/proc/load_map] for arguments.
 /datum/parsed_map/proc/load(x_offset, y_offset, z_offset, cropMap, no_changeturf, x_lower, x_upper, y_lower, y_upper, placeOnTop)
 	//How I wish for RAII
 	Master.StartLoadingMap()
@@ -142,6 +138,7 @@ GLOBAL_DATUM_INIT(_preloader, /datum/map_preloader, new)
 
 // Do not call except via load() above.
 /datum/parsed_map/proc/_load_impl(x_offset = 1, y_offset = 1, z_offset = world.maxz + 1, cropMap = FALSE, no_changeturf = FALSE, x_lower = -INFINITY, x_upper = INFINITY, y_lower = -INFINITY, y_upper = INFINITY, placeOnTop = FALSE)
+	var/list/areaCache = list()
 	var/list/modelCache = build_cache(no_changeturf)
 	var/space_key = modelCache[SPACE_KEY]
 	var/list/bounds
@@ -186,7 +183,7 @@ GLOBAL_DATUM_INIT(_preloader, /datum/map_preloader, new)
 							var/list/cache = modelCache[model_key]
 							if(!cache)
 								CRASH("Undefined model key in DMM: [model_key]")
-							build_coordinate(cache, xcrd, ycrd, zcrd, no_afterchange, placeOnTop)
+							build_coordinate(areaCache, cache, locate(xcrd, ycrd, zcrd), no_afterchange, placeOnTop)
 
 							// only bother with bounds that actually exist
 							bounds[MAP_MINX] = min(bounds[MAP_MINX], xcrd)
@@ -218,8 +215,8 @@ GLOBAL_DATUM_INIT(_preloader, /datum/map_preloader, new)
 
 	return TRUE
 
-/datum/parsed_map/proc/build_cache(no_changeturf)
-	if(modelCache)
+/datum/parsed_map/proc/build_cache(no_changeturf, bad_paths=null)
+	if(modelCache && !bad_paths)
 		return modelCache
 	. = modelCache = list()
 	var/list/grid_models = src.grid_models
@@ -246,8 +243,9 @@ GLOBAL_DATUM_INIT(_preloader, /datum/map_preloader, new)
 			var/atom_def = text2path(path_text) //path definition, e.g /obj/foo/bar
 			old_position = dpos + 1
 
-			if(!atom_def) // Skip the item if the path does not exist.  Fix your crap, mappers!
-				LAZYADD(bad_paths, path_text)
+			if(!ispath(atom_def, /atom)) // Skip the item if the path does not exist.  Fix your crap, mappers!
+				if(bad_paths)
+					LAZYOR(bad_paths[path_text], model_key)
 				continue
 			members.Add(atom_def)
 
@@ -295,7 +293,7 @@ GLOBAL_DATUM_INIT(_preloader, /datum/map_preloader, new)
 
 		.[model_key] = list(members, members_attributes)
 
-/datum/parsed_map/proc/build_coordinate(list/model, xcrd as num, ycrd as num, zcrd as num, no_changeturf as num, placeOnTop as num)
+/datum/parsed_map/proc/build_coordinate(list/areaCache, list/model, turf/crds, no_changeturf as num, placeOnTop as num)
 	var/index
 	var/list/members = model[1]
 	var/list/members_attributes = model[2]
@@ -305,20 +303,17 @@ GLOBAL_DATUM_INIT(_preloader, /datum/map_preloader, new)
 	////////////////
 
 	//The next part of the code assumes there's ALWAYS an /area AND a /turf on a given tile
-	var/turf/crds = locate(xcrd,ycrd,zcrd)
-
 	//first instance the /area and remove it from the members list
 	index = members.len
 	if(members[index] != /area/template_noop)
-		var/atom/instance
 		GLOB._preloader.setup(members_attributes[index])//preloader for assigning  set variables on atom creation
 		var/atype = members[index]
-		for(var/area/A in world)
-			if(A.type == atype)
-				instance = A
-				break
-		if(!instance)
-			instance = new atype(null)
+		var/atom/instance = areaCache[atype]
+		if (!instance)
+			instance = GLOB.areas_by_type[atype]
+			if (!instance)
+				instance = new atype(null)
+			areaCache[atype] = instance
 		if(crds)
 			instance.contents.Add(crds)
 
@@ -412,89 +407,68 @@ GLOBAL_DATUM_INIT(_preloader, /datum/map_preloader, new)
 //build a list from variables in text form (e.g {var1="derp"; var2; var3=7} => list(var1="derp", var2, var3=7))
 //return the filled list
 /datum/parsed_map/proc/readlist(text as text, delimiter=",")
-
-	var/list/to_return = list()
+	. = list()
+	if (!text)
+		return
 
 	var/position
 	var/old_position = 1
 
-	do
-		//find next delimiter that is not within  "..."
+	while(position != 0)
+		// find next delimiter that is not within  "..."
 		position = find_next_delimiter_position(text,old_position,delimiter)
 
-		//check if this is a simple variable (as in list(var1, var2)) or an associative one (as in list(var1="foo",var2=7))
+		// check if this is a simple variable (as in list(var1, var2)) or an associative one (as in list(var1="foo",var2=7))
 		var/equal_position = findtext(text,"=",old_position, position)
 
-		var/trim_left = trim_text(copytext(text,old_position,(equal_position ? equal_position : position)),1)//the name of the variable, must trim quotes to build a BYOND compliant associatives list
+		var/trim_left = trim_text(copytext(text,old_position,(equal_position ? equal_position : position)))
+		var/left_constant = delimiter == ";" ? trim_left : parse_constant(trim_left)
 		old_position = position + 1
 
-		if(equal_position)//associative var, so do the association
-			var/trim_right = trim_text(copytext(text,equal_position+1,position))//the content of the variable
+		if(equal_position && !isnum(left_constant))
+			// Associative var, so do the association.
+			// Note that numbers cannot be keys - the RHS is dropped if so.
+			var/trim_right = trim_text(copytext(text,equal_position+1,position))
+			var/right_constant = parse_constant(trim_right)
+			.[left_constant] = right_constant
 
-			//Check for string
-			if(findtext(trim_right,"\"",1,2))
-				trim_right = copytext(trim_right,2,findtext(trim_right,"\"",3,0))
+		else  // simple var
+			. += list(left_constant)
 
-			//Check for number
-			else if(isnum(text2num(trim_right)))
-				trim_right = text2num(trim_right)
+/datum/parsed_map/proc/parse_constant(text)
+	// number
+	var/num = text2num(text)
+	if(isnum(num))
+		return num
 
-			//Check for null
-			else if(trim_right == "null")
-				trim_right = null
+	// string
+	if(findtext(text,"\"",1,2))
+		return copytext(text,2,findtext(text,"\"",3,0))
 
-			//Check for list
-			else if(copytext(trim_right,1,5) == "list")
-				trim_right = readlist(copytext(trim_right,6,length(trim_right)))
+	// list
+	if(copytext(text,1,6) == "list(")
+		return readlist(copytext(text,6,length(text)))
 
-			//Check for file
-			else if(copytext(trim_right,1,2) == "'")
-				trim_right = file(copytext(trim_right,2,length(trim_right)))
+	// typepath
+	var/path = text2path(text)
+	if(ispath(path))
+		return path
 
-			//Check for path
-			else if(ispath(text2path(trim_right)))
-				trim_right = text2path(trim_right)
+	// file
+	if(copytext(text,1,2) == "'")
+		return file(copytext(text,2,length(text)))
 
-			to_return[trim_left] = trim_right
+	// null
+	if(text == "null")
+		return null
 
-		else//simple var
-			to_return[trim_left] = null
+	// not parsed:
+	// - pops: /obj{name="foo"}
+	// - new(), newlist(), icon(), matrix(), sound()
 
-	while(position != 0)
-
-	return to_return
+	// fallback: string
+	return text
 
 /datum/parsed_map/Destroy()
 	..()
 	return QDEL_HINT_HARDDEL_NOW
-
-//////////////////
-//Preloader datum
-//////////////////
-
-/datum/map_preloader
-	parent_type = /datum
-	var/list/attributes
-	var/target_path
-
-/datum/map_preloader/proc/setup(list/the_attributes, path)
-	if(the_attributes.len)
-		GLOB.use_preloader = TRUE
-		attributes = the_attributes
-		target_path = path
-
-/datum/map_preloader/proc/load(atom/what)
-	GLOB.use_preloader = FALSE
-	for(var/attribute in attributes)
-		var/value = attributes[attribute]
-		if(islist(value))
-			value = deepCopyList(value)
-		what.vars[attribute] = value
-
-/area/template_noop
-	name = "Area Passthrough"
-
-/turf/template_noop
-	name = "Turf Passthrough"
-	icon_state = "noop"
-	bullet_bounce_sound = null
