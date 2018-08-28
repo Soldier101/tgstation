@@ -36,7 +36,7 @@
 	. = ..()
 	verbs += /mob/living/proc/lay_down
 
-/mob/living/simple_animal/pet/cat/update_canmove()
+/mob/living/simple_animal/pet/cat/update_mobility()
 	..()
 	if(client && stat != DEAD)
 		if (resting)
@@ -46,7 +46,6 @@
 			icon_state = "[icon_living]"
 			collar_type = "[initial(collar_type)]"
 	regenerate_icons()
-
 
 /mob/living/simple_animal/pet/cat/space
 	name = "space cat"

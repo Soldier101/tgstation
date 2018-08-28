@@ -659,8 +659,10 @@
 //ATTACK HAND IGNORING PARENT RETURN VALUE
 //ATTACK HAND NOT CALLING PARENT
 /obj/item/toy/cards/deck/attack_hand(mob/user)
-	if(user.lying)
-		return
+	if(isliving(user))
+		var/mob/living/L = user
+		if(!(L.mobility_flags & MOBILITY_PICKUP))
+			return
 	var/choice = null
 	if(cards.len == 0)
 		to_chat(user, "<span class='warning'>There are no more cards to draw!</span>")

@@ -232,7 +232,7 @@
 		message_cooldown = world.time + 50
 		to_chat(user, "<span class='warning'>[src]'s door won't budge!</span>")
 
-/obj/machinery/atmospherics/components/unary/cryo_cell/open_machine(drop = 0)
+/obj/machinery/atmospherics/components/unary/cryo_cell/open_machine(drop = FALSE)
 	if(!state_open && !panel_open)
 		on = FALSE
 		..()
@@ -240,7 +240,7 @@
 		M.forceMove(get_turf(src))
 		if(isliving(M))
 			var/mob/living/L = M
-			L.update_canmove()
+			L.update_mobility()
 	occupant = null
 	update_icon()
 

@@ -184,7 +184,7 @@
 /mob/proc/restrained(ignore_grab)
 	return
 
-/mob/proc/incapacitated(ignore_restraints, ignore_grab)
+/mob/proc/incapacitated(ignore_restraints = FALSE, ignore_grab = FALSE, check_immobilized = FALSE)
 	return
 
 //This proc is called whenever someone clicks an inventory ui slot.
@@ -602,8 +602,6 @@
 
 // facing verbs
 /mob/proc/canface()
-	if(!canmove)
-		return FALSE
 	if(world.time < client.last_turn)
 		return FALSE
 	if(stat == DEAD || stat == UNCONSCIOUS)
@@ -615,6 +613,11 @@
 	if(restrained())
 		return FALSE
 	return TRUE
+
+/mob/living/canface()
+	if(!canmove)
+		return FALSE
+	return ..()
 
 /mob/proc/fall(forced)
 	drop_all_held_items()

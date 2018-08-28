@@ -61,10 +61,10 @@
 		if(AM in T.affecting)
 			return
 
-	if(ismob(AM))
-		var/mob/M = AM
+	if(isliving(AM))
+		var/mob/living/M = AM
 		if(immobilize)
-			M.canmove = 0
+			M.canmove = FALSE
 
 	affecting.Add(AM)
 	while(AM && !stopthrow)
@@ -98,10 +98,10 @@
 
 	affecting.Remove(AM)
 
-	if(ismob(AM))
-		var/mob/M = AM
+	if(isliving(AM))
+		var/mob/living/M = AM
 		if(immobilize)
-			M.canmove = 1
+			M.canmove = TRUE
 
 /* Stops things thrown by a thrower, doesn't do anything */
 

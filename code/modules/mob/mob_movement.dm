@@ -1,4 +1,7 @@
 /mob/CanPass(atom/movable/mover, turf/target)
+	return TRUE				//There's almost no cases where non /living mobs should be used in game as actual mobs, other than ghosts.
+
+/mob/living/CanPass(atom/movable/mover, turf/target)
 	if((mover.pass_flags & PASSMOB))
 		return TRUE
 	if(istype(mover, /obj/item/projectile) || mover.throwing)

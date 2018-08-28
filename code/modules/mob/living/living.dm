@@ -292,8 +292,8 @@
 			to_chat(src, "<span class='notice'>You have given up life and succumbed to death.</span>")
 		death()
 
-/mob/living/incapacitated(ignore_restraints, ignore_grab)
-	if(stat || IsUnconscious() || IsStun() || IsKnockdown() || (!ignore_restraints && restrained(ignore_grab)))
+/mob/living/incapacitated(ignore_restraints = FALSE, ignore_grab = FALSE, check_immobilized = FALSE)
+	if(stat || IsUnconscious() || IsStun() || IsParalyzed() || (check_immobilized && IsImmobilized()) || (!ignore_restraints && restrained(ignore_grab)))
 		return TRUE
 
 /mob/living/proc/InCritical()
@@ -462,7 +462,7 @@
 	ExtinguishMob()
 	fire_stacks = 0
 	confused = 0
-	update_canmove()
+	update_mobility()
 	GET_COMPONENT(mood, /datum/component/mood)
 	if (mood)
 		QDEL_LIST_ASSOC_VAL(mood.mood_events)
@@ -974,15 +974,29 @@
 	var/has_legs = get_num_legs()
 	var/has_arms = get_num_arms()
 	var/ignore_legs = get_leg_ignore()
-	canmove = !IsImmobilized() && !IsStun() && conscious && !IsParalyzed() && (!stat_softcrit || !pulledby) && !chokehold && !IsFrozen() && (has_arms || ignore_legs || has_legs)
-	canstand = conscious && !stat_softcrit && !IsKnockdown() && !chokehold && !IsParalyzed() && has_legs
-	canitem = !IsParalyzed() && !IsStun() && conscious && !chokehold && has_arms
+	var/canmove = !IsImmobilized() && !IsStun() && conscious && !IsParalyzed() && !buckled && (!stat_softcrit || !pulledby) && !chokehold && !IsFrozen() && (has_arms || ignore_legs || has_legs)
+	if(canmove)
+		mobility_flags |= MOBILITY_MOVE
+	else
+		mobility_flags &= ~MOBILITY_MOVE
+	var/canstand = conscious && !stat_softcrit && !IsKnockdown() && !chokehold && !IsParalyzed() && has_legs && !resting && !(buckled && buckled.buckle_lying)
+	if(canstand)
+		mobility_flags |= MOBILITY_STAND
+		lying = 0
+	else
+		mobility_flags &= ~MOBILITY_STAND
+		if(!lying)
+			lying = pick(90, 270)
+	var/canitem = !IsParalyzed() && !IsStun() && conscious && !chokehold && has_arms
+	if(canitem)
+		mobility_flags |= (MOBILITY_UI | MOBILITY_USE | MOBILITY_PICKUP | MOBILITY_STORAGE)
+	else
+		mobility_flags &= (MOBILITY_UI | MOBILITY_USE | MOBILITY_PICKUP | MOBILITY_STORAGE)
 	if(!canitem || !canstand)
 		drop_all_held_items()
 		if(pulling)
 			stop_pulling()
 		unset_machine()
-	lying = !canstand || (buckled && buckled.buckle_lying)
 	density = !lying
 	var/changed = lying == lying_prev
 	if(!lying_prev)
@@ -1036,7 +1050,7 @@
 	if(.)
 		if(client)
 			reset_perspective()
-		update_canmove() //if the mob was asleep inside a container and then got forceMoved out we need to make them fall.
+		update_mobility() //if the mob was asleep inside a container and then got forceMoved out we need to make them fall.
 
 /mob/living/proc/update_z(new_z) // 1+ to register, null to unregister
 	if (registered_z != new_z)

@@ -484,8 +484,7 @@
 		cooldown = COOLDOWN_DAMAGE //because stun removal
 		for(var/V in listeners)
 			var/mob/living/L = V
-			if(L.resting)
-				L.lay_down() //aka get up
+			L.set_resting(FALSE)
 			L.SetStun(0)
 			L.SetKnockdown(0)
 			L.SetUnconscious(0) //i said get up i don't care if you're being tased

@@ -400,7 +400,7 @@
 	if (notransform)
 		return
 	notransform = TRUE
-	Paralyze(1, ignore_canstun = TRUE)
+	mobility_flags = NONE
 	for(var/obj/item/W in src)
 		dropItemToGround(W)
 	regenerate_icons()
@@ -429,11 +429,11 @@
 /mob/living/carbon/human/proc/slimeize(reproduce as num)
 	if (notransform)
 		return
+	notransform = TRUE
+	mobility_flags = NONE
 	for(var/obj/item/W in src)
 		dropItemToGround(W)
 	regenerate_icons()
-	notransform = 1
-	canmove = 0
 	icon = null
 	invisibility = INVISIBILITY_MAXIMUM
 	for(var/t in bodyparts)

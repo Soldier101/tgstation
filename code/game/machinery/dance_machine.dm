@@ -459,5 +459,9 @@
 	. = ..()
 	if(active)
 		for(var/mob/M in rangers)
-			if(prob(5+(allowed(M)*4)) && M.canmove)
+			if(prob(5+(allowed(M)*4)))
+				if(isliving(M))
+					var/mob/living/L = M
+					if(!L.canmove)
+						continue
 				dance(M)

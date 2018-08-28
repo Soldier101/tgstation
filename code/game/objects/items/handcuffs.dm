@@ -270,7 +270,7 @@
 			if(iscarbon(L))
 				var/mob/living/carbon/C = L
 				snap = 1
-				if(!C.lying)
+				if(C.mobility_flags & MOBILITY_STAND)
 					def_zone = pick(BODY_ZONE_L_LEG, BODY_ZONE_R_LEG)
 					if(!C.legcuffed && C.get_num_legs(FALSE) >= 2) //beartrap can't cuff your leg if there's already a beartrap or legcuffs, or you don't have two legs.
 						C.legcuffed = src

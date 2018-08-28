@@ -221,7 +221,7 @@ Auto Patrol[]"},
 	var/list/targets = list()
 	for(var/mob/living/carbon/C in view(7,src)) //Let's find us a target
 		var/threatlevel = 0
-		if(C.Incapacitated())
+		if(C.incapacitated())
 			continue
 		threatlevel = C.assess_threat(judgement_criteria, lasercolor, weaponcheck=CALLBACK(src, .proc/check_for_weapons))
 		//speak(C.real_name + text(": threat: []", threatlevel))

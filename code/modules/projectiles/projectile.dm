@@ -267,10 +267,9 @@
 	var/turf/T = get_turf(A)
 	if(original in T)
 		return original
-	var/list/mob/possible_mobs = typecache_filter_list(T, GLOB.typecache_mob) - A
+	var/list/mob/living/possible_mobs = typecache_filter_list(T, GLOB.typecache_mob) - A
 	var/list/mob/mobs = list()
-	for(var/i in possible_mobs)
-		var/mob/M = i
+	for(var/mob/living/M in possible_mobs)
 		if(M.lying)
 			continue
 		mobs += M

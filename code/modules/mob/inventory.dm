@@ -203,7 +203,7 @@
 	return FALSE					//nonliving mobs don't have hands
 
 /mob/living/put_in_hand_check(obj/item/I)
-	if(!canitem || !istype(I))
+	if(!(mobility_flags & MOBILITY_PICKUP) || !istype(I))
 		return FALSE
 	return TRUE
 

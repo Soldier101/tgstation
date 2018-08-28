@@ -305,8 +305,10 @@ LINEN BINS
 	. = ..()
 	if(.)
 		return
-	if(user.lying)
-		return
+	if(isliving(user))
+		var/mob/living/L = user
+		if(!L.canitem)
+			return
 	if(amount >= 1)
 		amount--
 

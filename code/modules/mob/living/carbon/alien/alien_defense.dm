@@ -21,7 +21,7 @@ In all, this is a lot like the monkey code. /N
 	switch(M.a_intent)
 
 		if ("help")
-			resting = 0
+			set_resting(FALSE)
 			AdjustStun(-60)
 			AdjustKnockdown(-60)
 			AdjustUnconscious(-60)

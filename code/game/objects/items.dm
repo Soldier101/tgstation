@@ -174,7 +174,7 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 
 	if(isliving(usr))
 		var/mob/living/L = usr
-		if(!L.canitem)
+		if(!(L.mobility_flags & MOBILITY_PICKUP))
 			return
 
 	var/turf/T = loc
@@ -410,8 +410,13 @@ GLOBAL_VAR_INIT(rpg_loot_items, FALSE)
 	set category = "Object"
 	set name = "Pick up"
 
-	if(usr.incapacitated() || !Adjacent(usr) || usr.lying)
+	if(usr.incapacitated() || !Adjacent(usr))
 		return
+
+	if(isliving(usr))
+		var/mob/living/L = usr
+		if(!(L.mobility_flags & MOBILITY_PICKUP))
+			return
 
 	if(usr.get_active_held_item() == null) // Let me know if this has any problems -Yota
 		usr.UnarmedAttack(src)

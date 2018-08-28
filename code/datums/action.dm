@@ -100,8 +100,10 @@
 		if(owner.restrained())
 			return 0
 	if(check_flags & AB_CHECK_STUN)
-		if(owner.IsKnockdown() || owner.IsStun())
-			return 0
+		if(isliving(owner))
+			var/mob/living/L = owner
+			if(L.IsParalyzed() || L.IsStun())
+				return 0
 	if(check_flags & AB_CHECK_LYING)
 		if(owner.lying)
 			return 0

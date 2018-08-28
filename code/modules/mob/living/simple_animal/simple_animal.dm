@@ -322,7 +322,7 @@
 		health = 0
 		icon_state = icon_dead
 		density = FALSE
-		set_lying(TRUE)
+		set_resting(TRUE)
 		..()
 
 /mob/living/simple_animal/proc/CanAttack(atom/the_target)
@@ -411,17 +411,17 @@
 	else
 		..()
 
-/mob/living/simple_animal/update_mobilitiy(value_otherwise = TRUE)
-	if(IsUnconscious() || IsStun() || IsKnockdown() || stat || resting)
+/mob/living/simple_animal/update_mobility(value_otherwise = TRUE)
+	if(IsUnconscious() || IsStun() || IsKnockdown() || IsParalyzed() || stat || resting)
 		drop_all_held_items()
-		canmove = FALSE
-		canitem = FALSE
+		mobility_flags = NONE
 	else if(buckled)
-		canmove = FALSE
-		canitem = TRUE
+		mobility_flags = MOBILITY_FLAGS_INTERACTION
 	else
-		canmove = value_otherwise
-		canitem = value_otherwise
+		if(value_otherwise)
+			mobility_flags = MOBILITY_FLAGS_DEFAULT
+		else
+			mobility_flags = NONE
 	update_transform()
 	update_action_buttons_icon()
 

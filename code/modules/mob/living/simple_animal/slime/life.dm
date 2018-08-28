@@ -298,7 +298,7 @@
 			Discipline--
 
 	if(!client)
-		if(!canmove)
+		if(!(mobility_flags & MOBILITY_MOVE))
 			return
 
 		if(buckled)
@@ -383,13 +383,13 @@
 			if (Leader)
 				if(holding_still)
 					holding_still = max(holding_still - 1, 0)
-				else if(canmove && isturf(loc))
+				else if((mobility_flags & MOBILITY_MOVE) && isturf(loc))
 					step_to(src, Leader)
 
 			else if(hungry)
 				if (holding_still)
 					holding_still = max(holding_still - hungry, 0)
-				else if(canmove && isturf(loc) && prob(50))
+				else if((mobility_flags & MOBILITY_MOVE) && isturf(loc) && prob(50))
 					step(src, pick(GLOB.cardinals))
 
 			else
@@ -397,7 +397,7 @@
 					holding_still = max(holding_still - 1, 0)
 				else if (docile && pulledby)
 					holding_still = 10
-				else if(canmove && isturf(loc) && prob(33))
+				else if((mobility_flags & MOBILITY_MOVE) && isturf(loc) && prob(33))
 					step(src, pick(GLOB.cardinals))
 		else if(!AIproc)
 			INVOKE_ASYNC(src, .proc/AIprocess)

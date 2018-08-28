@@ -118,7 +118,7 @@
 		if(D.spread_flags & DISEASE_SPREAD_CONTACT_SKIN)
 			ContactContractDisease(D)
 
-	if(lying && surgeries.len)
+	if(!(mobility_flags & MOBILITY_STAND) && surgeries.len)
 		if(user.a_intent == INTENT_HELP || user.a_intent == INTENT_DISARM)
 			for(var/datum/surgery/S in surgeries)
 				if(S.next_step(user, user.a_intent))
@@ -266,8 +266,7 @@
 		AdjustKnockdown(-60)
 		AdjustUnconscious(-60)
 		AdjustSleeping(-100)
-		if(resting)
-			set_resting(FALSE)
+		set_resting(FALSE)
 
 		playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 
