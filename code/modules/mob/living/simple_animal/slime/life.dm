@@ -278,9 +278,9 @@
 /mob/living/simple_animal/slime/proc/handle_targets()
 	if(Tempstun)
 		if(!buckled) // not while they're eating!
-			canmove = FALSE
+			mobility_flags &= ~MOBILITY_MOVE
 	else
-		canmove = TRUE
+		mobility_flags |= MOBILITY_MOVE
 
 	if(attacked > 50)
 		attacked = 50

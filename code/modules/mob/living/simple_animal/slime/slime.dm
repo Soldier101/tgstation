@@ -456,7 +456,7 @@
 
 	SStun = world.time + rand(20,60)
 	spawn(0)
-		canmove = 0
+		mobility_flags &= ~MOBILITY_MOVE
 		if(user)
 			step_away(src,user,15)
 		sleep(3)

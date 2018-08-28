@@ -729,7 +729,7 @@
 /obj/item/toy/cards/deck/MouseDrop(atom/over_object)
 	. = ..()
 	var/mob/living/M = usr
-	if(!istype(M) || M.incapacitated() || M.lying)
+	if(!istype(M) || !(M.mobility_flags & MOBILITY_PICKUP))
 		return
 	if(Adjacent(usr))
 		if(over_object == M && loc != M)

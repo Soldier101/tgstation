@@ -361,7 +361,7 @@
 /obj/item/warpwhistle/proc/end_effect(mob/living/carbon/user)
 	user.invisibility = initial(user.invisibility)
 	user.status_flags &= ~GODMODE
-	user.canmove = TRUE
+	user.update_mobility()
 
 /obj/item/warpwhistle/attack_self(mob/living/carbon/user)
 	if(!istype(user) || on_cooldown)
@@ -370,7 +370,7 @@
 	last_user = user
 	var/turf/T = get_turf(user)
 	playsound(T,'sound/magic/warpwhistle.ogg', 200, 1)
-	user.canmove = FALSE
+	user.mobility_flags &= ~MOBILITY_MOVE
 	new /obj/effect/temp_visual/tornado(T)
 	sleep(20)
 	if(interrupted(user))
@@ -386,7 +386,7 @@
 		var/turf/potential_T = find_safe_turf()
 		if(T.z != potential_T.z || abs(get_dist_euclidian(potential_T,T)) > 50 - breakout)
 			user.forceMove(potential_T)
-			user.canmove = FALSE
+			user.mobility_flags &= ~MOBILITY_MOVE
 			T = potential_T
 			break
 		breakout += 1

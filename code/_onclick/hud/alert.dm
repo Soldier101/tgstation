@@ -257,7 +257,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	if(!istype(L) || !L.can_resist())
 		return
 	L.changeNext_move(CLICK_CD_RESIST)
-	if(L.canmove)
+	if(L.mobility_flags & MOBILITY_MOVE)
 		return L.resist_fire() //I just want to start a flame in your hearrrrrrtttttt.
 
 
