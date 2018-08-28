@@ -270,7 +270,7 @@
 	var/list/mob/living/possible_mobs = typecache_filter_list(T, GLOB.typecache_mob) - A
 	var/list/mob/mobs = list()
 	for(var/mob/living/M in possible_mobs)
-		if(M.lying)
+		if(!(user.mobility_flags & MOBILITY_STAND))
 			continue
 		mobs += M
 	var/mob/M = safepick(mobs)

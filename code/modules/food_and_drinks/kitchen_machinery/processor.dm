@@ -130,7 +130,7 @@
 		return
 	if(isliving(usr))
 		var/mob/living/L = usr
-		if(!L.canitem)
+		if(!(L.mobility_flags & MOBILITY_UI))
 			return
 	empty()
 	add_fingerprint(usr)

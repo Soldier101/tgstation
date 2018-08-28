@@ -94,7 +94,7 @@
 			if(stream_mode)
 				if(isliving(T))
 					var/mob/living/M = T
-					if(!M.lying || !range_left)
+					if((user.mobility_flags & MOBILITY_STAND) || !range_left)
 						D.reagents.reaction(M, VAPOR)
 						puff_reagent_left -= 1
 				else if(!range_left)

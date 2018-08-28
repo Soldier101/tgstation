@@ -94,9 +94,9 @@
 
 /mob/living/silicon/robot/update_mobility()
 	if(stat || buckled || lockcharge)
-		canmove = FALSE
+		mobility_flags &= ~MOBILITY_MOVE
 	else
-		canmove = TRUE
+		mobility_flags = MOBILITY_FLAGS_DEFAULT
 	update_transform()
 	update_action_buttons_icon()
 

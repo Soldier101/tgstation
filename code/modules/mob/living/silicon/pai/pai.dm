@@ -73,7 +73,6 @@
 	var/overload_ventcrawl = 0
 	var/overload_bulletblock = 0	//Why is this a good idea?
 	var/overload_maxhealth = 0
-	canmove = FALSE
 	var/silent = FALSE
 	var/brightness_power = 5
 

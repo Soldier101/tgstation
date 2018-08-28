@@ -216,7 +216,7 @@
 /mob/living/carbon/canSuicide()
 	if(!..())
 		return
-	if(!canmove || restrained())	//just while I finish up the new 'fun' suiciding verb. This is to prevent metagaming via suicide
-		to_chat(src, "You can't commit suicide whilst restrained! ((You can type Ghost instead however.))")
+	if(!(mobility_flags & MOBILITY_USE))	//just while I finish up the new 'fun' suiciding verb. This is to prevent metagaming via suicide
+		to_chat(src, "You can't commit suicide whilst immobile! ((You can type Ghost instead however.))")
 		return
 	return TRUE

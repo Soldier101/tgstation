@@ -18,7 +18,7 @@
 
 	emittersemicd = TRUE
 	addtimer(CALLBACK(src, .proc/emittercool), emittercd)
-	canmove = TRUE
+	mobility_flags = MOBILITY_FLAGS_DEFAULT
 	density = TRUE
 	if(istype(card.loc, /obj/item/pda))
 		var/obj/item/pda/P = card.loc
@@ -60,7 +60,7 @@
 	var/turf/T = drop_location()
 	card.forceMove(T)
 	forceMove(card)
-	canmove = FALSE
+	mobility_flags = NONE
 	density = FALSE
 	set_light(0)
 	holoform = FALSE
