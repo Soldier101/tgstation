@@ -105,7 +105,7 @@
 			if(L.IsParalyzed() || L.IsStun())
 				return 0
 	if(check_flags & AB_CHECK_LYING)
-		if(owner.lying)
+		if(!(owner.mobility_flags & MOBILITY_STAND))
 			return 0
 	if(check_flags & AB_CHECK_CONSCIOUS)
 		if(owner.stat)

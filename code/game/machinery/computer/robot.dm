@@ -37,7 +37,7 @@
 		dat += "[R.name] |"
 		if(R.stat)
 			dat += " Not Responding |"
-		else if (!(mobility_flags & MOBILITY_MOVE))
+		else if (!(R.mobility_flags & MOBILITY_MOVE))
 			dat += " Locked Down |"
 		else
 			dat += " Operating Normally |"

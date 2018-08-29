@@ -252,7 +252,7 @@
 
 	if(health >= 0 && !(has_trait(TRAIT_FAKEDEATH)))
 
-		if(lying)
+		if(!(mobility_flags & MOBILITY_STAND))
 			if(buckled)
 				to_chat(M, "<span class='warning'>You need to unbuckle [src] first to do that!")
 				return

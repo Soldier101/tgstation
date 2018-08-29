@@ -268,7 +268,7 @@
 /obj/structure/closet/MouseDrop_T(atom/movable/O, mob/living/user)
 	if(!istype(O) || O.anchored || istype(O, /obj/screen))
 		return
-	if(!istype(user) || user.incapacitated() || user.lying)
+	if(!istype(user) || user.incapacitated() || !(user.mobility_flags & MOBILITY_STAND))
 		return
 	if(!Adjacent(user) || !user.Adjacent(O))
 		return
@@ -314,11 +314,11 @@
 		return
 	container_resist(user)
 
-/obj/structure/closet/attack_hand(mob/user)
+/obj/structure/closet/attack_hand(mob/living/user)
 	. = ..()
 	if(.)
 		return
-	if(user.lying && get_dist(src, user) > 0)
+	if(!(user.mobility_flags & MOBILITY_STAND) && get_dist(src, user) > 0)
 		return
 
 	if(!toggle(user))

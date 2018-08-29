@@ -130,7 +130,7 @@
 					  "<span class='userdanger'>[A] [atk_verb] you!</span>")
 	D.apply_damage(rand(10,15), BRUTE)
 	playsound(get_turf(D), 'sound/weapons/punch1.ogg', 25, 1, -1)
-	if(prob(D.getBruteLoss()) && !D.lying)
+	if(prob(D.getBruteLoss()) && (D.mobility_flags & MOBILITY_STAND))
 		D.visible_message("<span class='warning'>[D] stumbles and falls!</span>", "<span class='userdanger'>The blow sends you to the ground!</span>")
 		D.Knockdown(80)
 	log_combat(A, D, "[atk_verb] (Sleeping Carp)")

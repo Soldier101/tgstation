@@ -128,7 +128,7 @@
 	log_combat(A, D, "punched")
 	var/picked_hit_type = pick("punches", "kicks")
 	var/bonus_damage = 10
-	if(D.IsKnockdown() || D.resting || D.lying)
+	if(!(D.mobility_flags & MOBILITY_STAND))
 		bonus_damage += 5
 		picked_hit_type = "stomps on"
 	D.apply_damage(bonus_damage, BRUTE)
