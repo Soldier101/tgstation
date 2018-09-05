@@ -55,7 +55,7 @@
 				if(T)
 					if(target.Move(T))
 						break
-		target.mobility_flags | MOBILITY_MOVE
+		target.mobility_flags |= MOBILITY_MOVE
 
 /obj/effect/proc_holder/spell/targeted/ethereal_jaunt/proc/jaunt_steam(mobloc)
 	var/datum/effect_system/steam_spread/steam = new /datum/effect_system/steam_spread()

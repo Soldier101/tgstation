@@ -38,7 +38,7 @@
 	var/damage = rand(A.dna.species.punchdamagelow, A.dna.species.punchdamagehigh)
 
 	var/atk_verb = A.dna.species.attack_verb
-	if(!(D.mobility_flags & MOBILITY_STANDING))
+	if(!(D.mobility_flags & MOBILITY_STAND))
 		atk_verb = "kick"
 
 	switch(atk_verb)

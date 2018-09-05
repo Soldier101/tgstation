@@ -14,7 +14,7 @@
 		initialize_controller_action_type(/datum/action/vehicle/sealed/DumpKidnappedMobs, VEHICLE_CONTROL_DRIVE)
 
 /obj/vehicle/sealed/car/MouseDrop_T(atom/dropping, mob/M)
-	if(!M.canmove || M.stat || M.restrained())
+	if(!((M.mobility_flags & (MOBILITY_STAND|MOBILITY_MOVE)) == (MOBILITY_STAND | MOBILITY_MOVE)) || M.stat || M.restrained())
 		return FALSE
 	if(ismob(dropping) && M != dropping)
 		var/mob/D = dropping

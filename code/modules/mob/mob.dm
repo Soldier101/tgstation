@@ -615,7 +615,7 @@
 	return TRUE
 
 /mob/living/canface()
-	if(!(user.mobility_flags & MOBILITY_MOVE))
+	if(!(mobility_flags & MOBILITY_MOVE))
 		return FALSE
 	return ..()
 

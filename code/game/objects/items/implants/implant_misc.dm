@@ -37,9 +37,10 @@
 	imp_in.SetStun(0)
 	imp_in.SetKnockdown(0)
 	imp_in.SetUnconscious(0)
+	imp_in.SetParalyzed(0)
+	imp_in.SetImmobilized(0)
 	imp_in.adjustStaminaLoss(-75)
-	imp_in.lying = FALSE
-	imp_in.resting = FALSE
+	imp_in.set_resting(FALSE)
 	imp_in.update_mobility()
 
 	imp_in.reagents.add_reagent("synaptizine", 10)
