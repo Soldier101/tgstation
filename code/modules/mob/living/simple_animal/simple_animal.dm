@@ -362,7 +362,8 @@
 		icon = initial(icon)
 		icon_state = icon_living
 		density = initial(density)
-		lying = 0
+		mobility_flags = MOBILITY_FLAGS_DEFAULT
+		update_mobility()
 		. = 1
 		movement_type = initial(movement_type)
 

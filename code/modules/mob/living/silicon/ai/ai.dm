@@ -18,7 +18,7 @@
 	icon_state = "ai"
 	anchored = TRUE
 	density = TRUE
-	canmove = FALSE
+	mobility_flags = NONE
 	status_flags = CANSTUN|CANPUSH
 	a_intent = INTENT_HARM //so we always get pushed instead of trying to swap
 	sight = SEE_TURFS | SEE_MOBS | SEE_OBJS

@@ -651,7 +651,7 @@
 		src.connected_ai = null
 	lawupdate = FALSE
 	lockcharge = FALSE
-	canmove = TRUE
+	mobility_flags |= MOBILITY_FLAGS_DEFAULT
 	scrambledcodes = TRUE
 	//Disconnect it's camera so it's not so easily tracked.
 	if(!QDELETED(builtInCamera))

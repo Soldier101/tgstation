@@ -2,7 +2,7 @@
 	if(stat == DEAD)
 		return
 	stat = DEAD
-	canmove = FALSE
+	mobility_flags = NONE
 	update_sight()
 	clear_fullscreens()
 

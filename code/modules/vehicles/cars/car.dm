@@ -14,8 +14,12 @@
 		initialize_controller_action_type(/datum/action/vehicle/sealed/DumpKidnappedMobs, VEHICLE_CONTROL_DRIVE)
 
 /obj/vehicle/sealed/car/MouseDrop_T(atom/dropping, mob/M)
-	if(!((M.mobility_flags & (MOBILITY_STAND|MOBILITY_MOVE)) == (MOBILITY_STAND | MOBILITY_MOVE)) || M.stat || M.restrained())
+	if(M.stat || M.restrained())
 		return FALSE
+	if(isliving(M))
+		var/mob/living/L = M
+		if(!((Lmobility_flags & (MOBILITY_STAND|MOBILITY_MOVE)) == (MOBILITY_STAND | MOBILITY_MOVE)))
+			return FALSE
 	if(ismob(dropping) && M != dropping)
 		var/mob/D = dropping
 		M.visible_message("<span class='warning'>[M] starts forcing [D] into [src]!</span>")
