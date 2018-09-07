@@ -18,7 +18,7 @@
 		return FALSE
 	if(isliving(M))
 		var/mob/living/L = M
-		if(!((Lmobility_flags & (MOBILITY_STAND|MOBILITY_MOVE)) == (MOBILITY_STAND | MOBILITY_MOVE)))
+		if(!((L.mobility_flags & (MOBILITY_STAND|MOBILITY_MOVE)) == (MOBILITY_STAND | MOBILITY_MOVE)))
 			return FALSE
 	if(ismob(dropping) && M != dropping)
 		var/mob/D = dropping

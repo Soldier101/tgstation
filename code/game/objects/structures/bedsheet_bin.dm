@@ -309,7 +309,7 @@ LINEN BINS
 		return
 	if(isliving(user))
 		var/mob/living/L = user
-		if(!L.canitem)
+		if(!(L.mobility_flags & MOBILITY_PICKUP))
 			return
 	if(amount >= 1)
 		amount--
