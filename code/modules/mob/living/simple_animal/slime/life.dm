@@ -70,7 +70,7 @@
 						if(Target.Adjacent(src))
 							Target.attack_slime(src)
 					return
-				if(!Target.lying && prob(80))
+				if((Target.mobility_flags & MOBILITY_STAND) && prob(80))
 
 					if(Target.client && Target.health >= 20)
 						if(!Atkcool)

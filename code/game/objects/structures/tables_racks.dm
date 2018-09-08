@@ -505,7 +505,7 @@
 	. = ..()
 	if(.)
 		return
-	if(user.IsKnockdown() || user.resting || user.lying || user.get_num_legs() < 2)
+	if(user.IsKnockdown() || user.resting || !(user.mobility_flags & MOBILITY_STAND) || user.get_num_legs() < 2)
 		return
 	user.changeNext_move(CLICK_CD_MELEE)
 	user.do_attack_animation(src, ATTACK_EFFECT_KICK)

@@ -778,7 +778,7 @@
 	if(usr.stat || !ishuman(usr))
 		return
 	var/mob/living/carbon/human/cardUser = usr
-	if(!cardUser.canmove)
+	if(!(cardUser.mobility_flags & MOBILITY_USE))
 		return
 	var/O = src
 	if(href_list["pick"])
@@ -919,7 +919,7 @@
 		return ..()
 
 /obj/item/toy/cards/singlecard/attack_self(mob/living/carbon/human/user)
-	if(!ishuman(user) || !user.canitem)
+	if(!ishuman(user) || !(user.mobility_flags & MOBILITY_USE))
 		return
 	Flip()
 

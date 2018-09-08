@@ -179,8 +179,12 @@
 	qdel(src)
 
 /obj/machinery/suit_storage_unit/MouseDrop_T(atom/A, mob/living/user)
-	if(!istype(user) || user.stat || user.lying || !Adjacent(user) || !Adjacent(A) || !isliving(A))
+	if(!istype(user) || user.stat || !Adjacent(user) || !Adjacent(A) || !isliving(A))
 		return
+	if(isliving(user))
+		var/mob/living/L = user
+		if(!(L.mobility_flags & MOBILITY_STAND))
+			return
 	var/mob/living/target = A
 	if(!state_open)
 		to_chat(user, "<span class='warning'>The unit's doors are shut!</span>")

@@ -289,7 +289,7 @@ GLOBAL_LIST_EMPTY(species_list)
 	. = 1
 	return
 
-/proc/do_after_mob(mob/user, var/list/targets, time = 30, uninterruptible = 0, progress = 1, datum/callback/extra_checks)
+/proc/do_after_mob(mob/user, list/targets, time = 30, uninterruptible = 0, progress = 1, datum/callback/extra_checks, required_mobility_flags = MOBILITY_STAND)
 	if(!user || !targets)
 		return 0
 	if(!islist(targets))
@@ -328,7 +328,7 @@ GLOBAL_LIST_EMPTY(species_list)
 				user_loc = user.loc
 
 			for(var/atom/target in targets)
-				if((!drifting && user_loc != user.loc) || QDELETED(target) || originalloc[target] != target.loc || user.get_active_held_item() != holding || user.incapacitated() || user.lying || (extra_checks && !extra_checks.Invoke()))
+				if((!drifting && user_loc != user.loc) || QDELETED(target) || originalloc[target] != target.loc || user.get_active_held_item() != holding || user.incapacitated() || !CHECK_MULTIPLE_BITFIELDS(user.mobility_flags, required_mobility_flags) || (extra_checks && !extra_checks.Invoke()))
 					. = 0
 					break mainloop
 	if(progbar)

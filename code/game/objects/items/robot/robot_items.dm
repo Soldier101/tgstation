@@ -91,7 +91,7 @@
 		if(1)
 			if(M.health >= 0)
 				if(ishuman(M))
-					if(M.lying)
+					if(!(M.mobility_flags & MOBILITY_STAND))
 						user.visible_message("<span class='notice'>[user] shakes [M] trying to get [M.p_them()] up!</span>", \
 										"<span class='notice'>You shake [M] trying to get [M.p_them()] up!</span>")
 					else if(user.zone_selected == BODY_ZONE_HEAD)

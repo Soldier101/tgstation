@@ -33,8 +33,8 @@
 	host_mob.SetKnockdown(0)
 	host_mob.SetUnconscious(0)
 	host_mob.adjustStaminaLoss(-75)
-	host_mob.lying = 0
-	host_mob.update_canmove()
+	host_mob.set_resting(FALSE)
+	host_mob.update_mobility()
 	host_mob.reagents.add_reagent("stimulants", 1.5)
 
 /datum/nanite_program/hardening
