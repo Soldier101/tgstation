@@ -20,10 +20,10 @@
 		var/mob/living/L = M
 		if(!((L.mobility_flags & (MOBILITY_STAND|MOBILITY_MOVE)) == (MOBILITY_STAND | MOBILITY_MOVE)))
 			return FALSE
-	if(ismob(dropping) && M != dropping)
-		var/mob/D = dropping
-		M.visible_message("<span class='warning'>[M] starts forcing [D] into [src]!</span>")
-		mob_try_forced_enter(M, D)
+	if(isliving(dropping) && M != dropping)
+		var/mob/living/L = dropping
+		L.visible_message("<span class='warning'>[M] starts forcing [L] into [src]!</span>")
+		mob_try_forced_enter(M, L)
 	return ..()
 
 /obj/vehicle/sealed/car/mob_try_exit(mob/M, mob/user, silent = FALSE)
@@ -43,10 +43,20 @@
 	last_enginesound_time = world.time
 	playsound(src, engine_sound, 100, TRUE)
 
+/obj/vehicle/sealed/car/attacked_by(obj/item/I, mob/living/user)
+	if(!I.force)
+		return
+	if(occupants[user])
+		to_chat(user, "<span class='notice'>Your attack bounces off of the car's padded interior.</span>")
+		return
+	return ..()
+
 /obj/vehicle/sealed/car/attack_hand(mob/living/user)
 	. = ..()
 	if(!(car_traits & CAN_KIDNAP))
 		return
+	if(occupants[user])
+		return	
 	to_chat(user, "<span class='notice'>You start opening [src]'s trunk.</span>")
 	if(do_after(user, 30))
 		if(return_amount_of_controllers_with_flag(VEHICLE_CONTROL_KIDNAPPED))
