@@ -235,11 +235,11 @@
 	do_jitter_animation(jitteriness)
 	stuttering += 2
 	if((!tesla_shock || (tesla_shock && siemens_coeff > 0.5)) && stun)
-		Stun(40)
+		Paralyze(40)
 	spawn(20)
 		jitteriness = max(jitteriness - 990, 10) //Still jittery, but vastly less
 		if((!tesla_shock || (tesla_shock && siemens_coeff > 0.5)) && stun)
-			Knockdown(60)
+			Paralyze(60)
 	if(override)
 		return override
 	else
@@ -266,6 +266,7 @@
 		AdjustKnockdown(-60)
 		AdjustUnconscious(-60)
 		AdjustSleeping(-100)
+		AdjustParalyzed(-60)
 		set_resting(FALSE)
 
 		playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)

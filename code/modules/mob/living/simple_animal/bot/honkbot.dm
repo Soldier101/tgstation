@@ -150,7 +150,7 @@ Maintenance panel panel is [open ? "opened" : "closed"]"},
 		if (emagged <= 1)
 			honk_attack(A)
 		else
-			if(!C.IsStun() || arrest_type)
+			if(!C.IsParalyzed() || arrest_type)
 				stun_attack(A)
 		..()
 	else if (!spam_flag) //honking at the ground
@@ -197,7 +197,7 @@ Maintenance panel panel is [open ? "opened" : "closed"]"},
 			C.stuttering = 20
 			C.adjustEarDamage(0, 5) //far less damage than the H.O.N.K.
 			C.Jitter(50)
-			C.Knockdown(60)
+			C.Paralyze(60)
 			var/mob/living/carbon/human/H = C
 			if(client) //prevent spam from players..
 				spam_flag = TRUE
@@ -216,7 +216,7 @@ Maintenance panel panel is [open ? "opened" : "closed"]"},
 					"<span class='userdanger'>[src] has honked you!</span>")
 		else
 			C.stuttering = 20
-			C.Knockdown(80)
+			C.Paralyze(80)
 			addtimer(CALLBACK(src, .proc/spam_flag_false), cooldowntime)
 
 

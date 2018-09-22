@@ -619,9 +619,6 @@
 		return FALSE
 	return ..()
 
-/mob/proc/fall(forced)
-	drop_all_held_items()
-
 /mob/verb/eastface()
 	set hidden = TRUE
 	if(!canface())

@@ -74,12 +74,12 @@
 				sleep(2)//Runtime prevention (infinite bump() calls on hulks)
 				step_towards(src,L)
 			else
-				Knockdown(40, 1, 1)
+				Paralyze(40, 1, 1)
 
 			toggle_leap(0)
 		else if(A.density && !A.CanPass(src))
 			visible_message("<span class ='danger'>[src] smashes into [A]!</span>", "<span class ='alertalien'>[src] smashes into [A]!</span>")
-			Knockdown(40, 1, 1)
+			Paralyze(40, 1, 1)
 
 		if(leaping)
 			leaping = FALSE

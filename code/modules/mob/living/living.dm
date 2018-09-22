@@ -207,7 +207,7 @@
 		return FALSE
 	if(!(AM.can_be_pulled(src)))
 		return FALSE
-	if(throwing || incapacitated())
+	if(throwing || !(mobility_flags & MOBILITY_PULL))
 		return FALSE
 
 	AM.add_fingerprint(src)
@@ -975,12 +975,14 @@
 		mobility_flags |= MOBILITY_MOVE
 	else
 		mobility_flags &= ~MOBILITY_MOVE
-	var/canstand = conscious && !stat_softcrit && !IsKnockdown() && !chokehold && !IsParalyzed() && has_legs && !resting && !(buckled && buckled.buckle_lying)
+	var/canstand_involuntary = conscious && !stat_softcrit && !IsKnockdown() && !chokehold && !IsParalyzed() && has_legs && !(buckled && buckled.buckle_lying)
+	var/canstand = canstand_involuntary && !resting
+
 	if(canstand)
-		mobility_flags |= (MOBILITY_STAND | MOBILITY_UI)
+		mobility_flags |= (MOBILITY_STAND | MOBILITY_UI | MOBILITY_PULL)
 		lying = 0
 	else
-		mobility_flags &= ~(MOBILITY_STAND | MOBILITY_UI)
+		mobility_flags &= ~(MOBILITY_STAND | MOBILITY_UI | MOBILITY_PULL)
 		if(!lying)
 			lying = pick(90, 270)
 	var/canitem = !IsParalyzed() && !IsStun() && conscious && !chokehold && has_arms
@@ -988,16 +990,18 @@
 		mobility_flags |= (MOBILITY_USE | MOBILITY_PICKUP | MOBILITY_STORAGE)
 	else
 		mobility_flags &= (MOBILITY_USE | MOBILITY_PICKUP | MOBILITY_STORAGE)
-	if(!canitem || !canstand)
+	if(!(mobility_flags & MOBILITY_USE))
 		drop_all_held_items()
+	if(!(mobility_flags & MOBILITY_PULL))
 		if(pulling)
 			stop_pulling()
+	if(!(mobility_flags & MOBILITY_UI))
 		unset_machine()
 	density = !lying
 	var/changed = lying == lying_prev
-	if(!lying_prev)
-		fall(!canstand)
 	if(lying)
+		if(!lying_prev)
+			fall(!canstand_involuntary)
 		if(layer == initial(layer)) //to avoid special cases like hiding larvas.
 			layer = LYING_MOB_LAYER //so mob lying always appear behind standing mobs
 	else
@@ -1007,7 +1011,15 @@
 	if(changed)
 		if(client)
 			client.move_delay = world.time + movement_delay()
+	to_chat(world, "[__LINE__] [__FILE__] debug: stat_softcrit [stat_softcrit] stat_conscious [stat_conscious] conscious [conscious] chokehold [chokehold] \
+	has_legs [has_legs] has_arms [has_arms] ignore_legs [ignore_legs] canmove [canmove] canstand [canstand] paralyzed/knockdown [IsParalyzed()]/[IsKnockdown()] resting [resting] \
+	buckled [buckled] buckled.buckled_lying [buckled && buckled.buckle_lying] lying_prev [lying_prev] changed [changed] lying [lying] canstand_involuntary [canstand_involuntary] \
+	")
 	lying_prev = lying
+
+/mob/living/proc/fall(forced)
+	if(!(mobility_flags & MOBILITY_USE))
+		drop_all_held_items()
 
 /mob/living/proc/AddAbility(obj/effect/proc_holder/A)
 	abilities.Add(A)

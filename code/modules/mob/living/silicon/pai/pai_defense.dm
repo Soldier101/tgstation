@@ -21,10 +21,10 @@
 			qdel(src)
 		if(2)
 			fold_in(force = 1)
-			Knockdown(400)
+			Paralyze(400)
 		if(3)
 			fold_in(force = 1)
-			Knockdown(200)
+			Paralyze(200)
 
 /mob/living/silicon/pai/attack_hand(mob/living/carbon/human/user)
 	switch(user.a_intent)
