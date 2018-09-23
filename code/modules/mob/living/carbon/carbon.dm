@@ -272,7 +272,7 @@
 
 /mob/living/carbon/resist_fire()
 	fire_stacks -= 5
-	Knockdown(60, TRUE, TRUE)
+	Paralyze(60, TRUE, TRUE)
 	spin(32,2)
 	visible_message("<span class='danger'>[src] rolls on the floor, trying to put [p_them()]self out!</span>", \
 		"<span class='notice'>You stop, drop, and roll!</span>")
@@ -449,7 +449,7 @@
 			visible_message("<span class='warning'>[src] dry heaves!</span>", \
 							"<span class='userdanger'>You try to throw up, but there's nothing in your stomach!</span>")
 		if(stun)
-			Paralzye(200)
+			Paralyze(200)
 		return 1
 
 	if(is_mouth_covered()) //make this add a blood/vomit overlay later it'll be hilarious
@@ -536,9 +536,9 @@
 	if(stam > DAMAGE_PRECISION)
 		var/total_health = (health - stam)
 		if(total_health <= crit_threshold && !stat)
-			if(!IsKnockdown())
+			if(!IsParalyzed())
 				to_chat(src, "<span class='notice'>You're too exhausted to keep going...</span>")
-			Knockdown(70)
+			Paralyze(70)
 			update_health_hud()
 
 /mob/living/carbon/update_sight()

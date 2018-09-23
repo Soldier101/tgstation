@@ -468,7 +468,7 @@
 		to_chat(user, "<span class='cultlarge'>\"You want to be blind, do you?\"</span>")
 		user.dropItemToGround(src, TRUE)
 		user.Dizzy(30)
-		user.Knockdown(100)
+		user.Paralyze(100)
 		user.blind_eyes(30)
 
 /obj/item/reagent_containers/glass/beaker/unholywater
@@ -686,9 +686,9 @@
 		else if(!..())
 			if(!L.anti_magic_check())
 				if(is_servant_of_ratvar(L))
-					L.Knockdown(100)
+					L.Paralyze(100)
 				else
-					L.Knockdown(50)
+					L.Paralyze(50)
 			break_spear(T)
 	else
 		..()

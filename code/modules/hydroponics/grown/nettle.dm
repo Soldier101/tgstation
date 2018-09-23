@@ -111,5 +111,5 @@
 		M.adjust_blurriness(force/7)
 		if(prob(20))
 			M.Unconscious(force / 0.3)
-			M.Knockdown(force / 0.75)
+			M.Paralyze(force / 0.75)
 		M.drop_all_held_items()
