@@ -164,7 +164,7 @@
 
 				do_sparks(5, TRUE, src)
 				var/power = M.powerlevel + rand(0,3)
-				Knockdown(power*20)
+				Paralyze(power*20)
 				if(stuttering < power)
 					stuttering = power
 				if (prob(stunprob) && M.powerlevel >= 8)
@@ -332,7 +332,7 @@
 	var/effect_amount = intensity - ear_safety
 	if(effect_amount > 0)
 		if(stun_pwr)
-			Knockdown(stun_pwr*effect_amount)
+			Paralyze(stun_pwr*effect_amount)
 
 		if(istype(ears) && (deafen_pwr || damage_pwr))
 			var/ear_damage = damage_pwr * effect_amount

@@ -7,7 +7,7 @@
 	if(. & EMP_PROTECT_SELF)
 		return
 	take_holo_damage(50/severity)
-	Knockdown(400/severity)
+	Paralyze(400/severity)
 	silent = max(30/severity, silent)
 	if(holoform)
 		fold_in(force = TRUE)
@@ -85,7 +85,7 @@
 	take_holo_damage(amount & 0.25)
 
 /mob/living/silicon/pai/adjustBrainLoss(amount)
-	Knockdown(amount * 0.2)
+	Paralyze(amount * 0.2)
 
 /mob/living/silicon/pai/getBruteLoss()
 	return emittermaxhealth - emitterhealth

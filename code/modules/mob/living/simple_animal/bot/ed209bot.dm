@@ -527,7 +527,7 @@ Auto Patrol[]"},
 		return
 	if(iscarbon(A))
 		var/mob/living/carbon/C = A
-		if(!C.IsStun() || arrest_type)
+		if(!C.IsStun() || !C.IsParalyzed() || arrest_type)
 			stun_attack(A)
 		else if(C.canBeHandcuffed() && !C.handcuffed)
 			cuff(A)
@@ -545,7 +545,7 @@ Auto Patrol[]"},
 	spawn(2)
 		icon_state = "[lasercolor]ed209[on]"
 	var/threat = 5
-	C.Knockdown(100)
+	C.Paralyze(100)
 	C.stuttering = 5
 	if(ishuman(C))
 		var/mob/living/carbon/human/H = C

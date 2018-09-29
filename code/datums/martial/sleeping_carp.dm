@@ -132,7 +132,7 @@
 	playsound(get_turf(D), 'sound/weapons/punch1.ogg', 25, 1, -1)
 	if(prob(D.getBruteLoss()) && (D.mobility_flags & MOBILITY_STAND))
 		D.visible_message("<span class='warning'>[D] stumbles and falls!</span>", "<span class='userdanger'>The blow sends you to the ground!</span>")
-		D.Knockdown(80)
+		D.Paralyze(80)
 	log_combat(A, D, "[atk_verb] (Sleeping Carp)")
 	return 1
 
@@ -181,7 +181,7 @@
 	add_fingerprint(user)
 	if((user.has_trait(TRAIT_CLUMSY)) && prob(50))
 		to_chat(user, "<span class ='warning'>You club yourself over the head with [src].</span>")
-		user.Knockdown(60)
+		user.Paralyze(60)
 		if(ishuman(user))
 			var/mob/living/carbon/human/H = user
 			H.apply_damage(2*force, BRUTE, BODY_ZONE_HEAD)
@@ -215,7 +215,7 @@
 		if(prob(10))
 			H.visible_message("<span class='warning'>[H] collapses!</span>", \
 								   "<span class='userdanger'>Your legs give out!</span>")
-			H.Knockdown(80)
+			H.Paralyze(80)
 		if(H.staminaloss && !H.IsSleeping())
 			var/total_health = (H.health - H.staminaloss)
 			if(total_health <= HEALTH_THRESHOLD_CRIT && !H.stat)
