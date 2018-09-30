@@ -14,6 +14,8 @@
 	user.SetUnconscious(0)
 	user.SetStun(0)
 	user.SetKnockdown(0)
+	user.SetImmobilized(0)
+	user.SetParalyzed(0)
 	user.reagents.add_reagent("changelingadrenaline", 10)
 	user.reagents.add_reagent("changelinghaste", 2) //For a really quick burst of speed
 	user.adjustStaminaLoss(-75)

@@ -123,7 +123,7 @@
 		pushed_mob.pass_flags &= ~PASSTABLE
 	if(pushed_mob.loc != loc) //Something prevented the tabling
 		return
-	pushed_mob.Knockdown(40)
+	pushed_mob.Paralyze(40)
 	pushed_mob.visible_message("<span class='danger'>[user] pushes [pushed_mob] onto [src].</span>", \
 								"<span class='userdanger'>[user] pushes [pushed_mob] onto [src].</span>")
 	log_combat(user, pushed_mob, "pushed")
@@ -235,7 +235,7 @@
 		debris -= AM
 		if(istype(AM, /obj/item/shard))
 			AM.throw_impact(L)
-	L.Knockdown(100)
+	L.Paralyze(100)
 	qdel(src)
 
 /obj/structure/table/glass/deconstruct(disassembled = TRUE, wrench_disassembly = 0)
