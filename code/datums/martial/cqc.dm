@@ -53,12 +53,12 @@
 /datum/martial_art/cqc/proc/Slam(mob/living/carbon/human/A, mob/living/carbon/human/D)
 	if(!can_use(A))
 		return FALSE
-	if(!D.stat || !D.IsKnockdown())
+	if(D.mobility_flags & MOBILITY_STAND)
 		D.visible_message("<span class='warning'>[A] slams [D] into the ground!</span>", \
 						  	"<span class='userdanger'>[A] slams you into the ground!</span>")
 		playsound(get_turf(A), 'sound/weapons/slam.ogg', 50, 1, -1)
 		D.apply_damage(10, BRUTE)
-		D.Knockdown(120)
+		D.Paralyze(120)
 		log_combat(A, D, "slammed (CQC)")
 	return TRUE
 

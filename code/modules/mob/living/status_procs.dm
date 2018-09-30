@@ -217,6 +217,31 @@
 			P = apply_status_effect(STATUS_EFFECT_PARALYZED, amount, updating)
 		return P
 
+//Blanket
+/mob/living/proc/AllImmobility(amount, updating)
+	Paralyze(amount, FALSE)
+	Knockdown(amount, FALSE)
+	Stun(amount, FALSE)
+	Immobilize(amount, FALSE)
+	if(updating)
+		update_mobility()
+
+/mob/living/proc/SetAllImmobility(amount, updating)
+	SetParalyzed(amount, FALSE)
+	SetKnockdown(amount, FALSE)
+	SetStun(amount, FALSE)
+	SetImmobilized(amount, FALSE)
+	if(updating)
+		update_mobility()
+
+/mob/living/proc/AdjustAllImmobility(amount, updating)
+	AdjustParalyzed(amount, FALSE)
+	AdjustKnockdown(amount, FALSE)
+	AdjustStun(amount, FALSE)
+	AdjustImmobilized(amount, FALSE)
+	if(updating)
+		update_mobility()
+
 //////////////////UNCONSCIOUS
 /mob/living/proc/IsUnconscious() //If we're unconscious
 	return has_status_effect(STATUS_EFFECT_UNCONSCIOUS)
@@ -418,7 +443,7 @@
 	add_trait(TRAIT_DEATHCOMA, source)
 	tod = station_time_timestamp()
 	update_stat()
-	
+
 /mob/living/proc/unignore_slowdown(list/sources)
 	remove_trait(TRAIT_IGNORESLOWDOWN, sources)
 	update_movespeed(FALSE)

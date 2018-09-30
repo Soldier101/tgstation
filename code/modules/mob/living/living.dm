@@ -462,6 +462,8 @@
 	set_disgust(0)
 	SetStun(0, FALSE)
 	SetKnockdown(0, FALSE)
+	SetImmobilized(0, FALSE)
+	SetParalyzed(0, FALSE)
 	SetSleeping(0, FALSE)
 	radiation = 0
 	nutrition = NUTRITION_LEVEL_FED + 50
@@ -960,7 +962,7 @@
 						"[C] trips over [src] and falls!", \
 						"[C] topples over [src]!", \
 						"[C] leaps out of [src]'s way!")]</span>")
-	C.Knockdown(40)
+	C.Paralyze(40)
 
 /mob/living/ConveyorMove()
 	if((movement_type & FLYING) && !stat)
@@ -1159,7 +1161,7 @@
 	. = ..()
 	switch(var_name)
 		if("knockdown")
-			SetKnockdown(var_value)
+			SetParalyzed(var_value)
 		if("stun")
 			SetStun(var_value)
 		if("unconscious")

@@ -29,9 +29,7 @@
 	if(!..())
 		return
 	to_chat(host_mob, "<span class='notice'>You feel a sudden surge of energy!</span>")
-	host_mob.SetStun(0)
-	host_mob.SetKnockdown(0)
-	host_mob.SetUnconscious(0)
+	host_mob.SetAllImmobility(0)
 	host_mob.adjustStaminaLoss(-75)
 	host_mob.set_resting(FALSE)
 	host_mob.update_mobility()

@@ -359,7 +359,7 @@ Maintenance panel panel is [open ? "opened" : "closed"]"},
 						  	"[C] trips over [src] and falls!", \
 						  	"[C] topples over [src]!", \
 						  	"[C] leaps out of [src]'s way!")]</span>")
-			C.Knockdown(10)
+			C.Paralyze(10)
 			playsound(loc, 'sound/misc/sadtrombone.ogg', 50, 1, -1)
 			if(!client)
 				speak("Honk!")
