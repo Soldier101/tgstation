@@ -1151,7 +1151,7 @@ GLOBAL_LIST_INIT(hallucination_list, list(
 			 "i[prob(50)?" fucking":""] hate [pick("blood cult", "clock cult", "revenants", "this round","this","myself","admins","you")]")]\"</span>")
 	sleep(rand(70,90))
 	target.set_screwyhud(SCREWYHUD_NONE)
-	target.SetParalyze(0)
+	target.SetParalyzed(0)
 	target.silent = FALSE
 	qdel(src)
 
