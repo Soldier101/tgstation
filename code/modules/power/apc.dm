@@ -266,7 +266,7 @@
 		to_chat(user, "<span class='brass'>There is an integration cog installed!</span>")
 
 	to_chat(user, "<span class='notice'>Alt-Click the APC to [ locked ? "unlock" : "lock"] the interface.</span>")
-	
+
 	if(issilicon(user))
 		to_chat(user, "<span class='notice'>Ctrl-Click the APC to switch the breaker [ operating ? "off" : "on"].</span>")
 
@@ -305,19 +305,17 @@
 			icon_state = "apc0"
 
 	if(!(update_state & UPSTATE_ALLGOOD))
-		cut_overlays()
+		SSvis_overlays.remove_vis_overlay(src, managed_vis_overlays)
 
 	if(update & 2)
-		cut_overlays()
+		SSvis_overlays.remove_vis_overlay(src, managed_vis_overlays)
 		if(!(stat & (BROKEN|MAINT)) && update_state & UPSTATE_ALLGOOD)
-			var/list/O = list(
-				"apcox-[locked]",
-				"apco3-[charging]")
+			SSvis_overlays.add_vis_overlay(src, icon, "apcox-[locked]", ABOVE_LIGHTING_LAYER, ABOVE_LIGHTING_PLANE, dir)
+			SSvis_overlays.add_vis_overlay(src, icon, "apco3-[charging]", ABOVE_LIGHTING_LAYER, ABOVE_LIGHTING_PLANE, dir)
 			if(operating)
-				O += "apco0-[equipment]"
-				O += "apco1-[lighting]"
-				O += "apco2-[environ]"
-			add_overlay(O)
+				SSvis_overlays.add_vis_overlay(src, icon, "apco0-[equipment]", ABOVE_LIGHTING_LAYER, ABOVE_LIGHTING_PLANE, dir)
+				SSvis_overlays.add_vis_overlay(src, icon, "apco1-[lighting]", ABOVE_LIGHTING_LAYER, ABOVE_LIGHTING_PLANE, dir)
+				SSvis_overlays.add_vis_overlay(src, icon, "apco2-[environ]", ABOVE_LIGHTING_LAYER, ABOVE_LIGHTING_PLANE, dir)
 
 	// And now, separately for cleanness, the lighting changing
 	if(update_state & UPSTATE_ALLGOOD)
@@ -723,6 +721,7 @@
 			locked = !locked
 			to_chat(user, "<span class='notice'>You [ locked ? "lock" : "unlock"] the APC interface.</span>")
 			update_icon()
+			updateUsrDialog()
 		else
 			to_chat(user, "<span class='warning'>Access denied.</span>")
 
@@ -1106,7 +1105,7 @@
 
 /obj/machinery/power/apc/add_load(amount)
 	if(terminal && terminal.powernet)
-		terminal.powernet.load += amount
+		terminal.add_load(amount)
 
 /obj/machinery/power/apc/avail()
 	if(terminal)

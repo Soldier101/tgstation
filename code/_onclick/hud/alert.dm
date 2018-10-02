@@ -257,7 +257,7 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 	if(!istype(L) || !L.can_resist())
 		return
 	L.changeNext_move(CLICK_CD_RESIST)
-	if(L.canmove)
+	if(L.mobility_flags & MOBILITY_MOVE)
 		return L.resist_fire() //I just want to start a flame in your hearrrrrrtttttt.
 
 
@@ -338,13 +338,13 @@ or shoot a gun to move around via Newton's 3rd Law of Motion."
 			angle = 0
 			cut_overlays()
 			icon_state = "runed_sense0"
-			desc = "Nar-Sie demands that [sac_objective.target] be sacrificed before the summoning ritual can begin."
+			desc = "Nar'Sie demands that [sac_objective.target] be sacrificed before the summoning ritual can begin."
 			add_overlay(sac_objective.sac_image)
 		else
 			var/datum/objective/eldergod/summon_objective = locate() in antag.cult_team.objectives
 			if(!summon_objective)
 				return
-			desc = "The sacrifice is complete, summon Nar-Sie! The summoning can only take place in [english_list(summon_objective.summon_spots)]!"
+			desc = "The sacrifice is complete, summon Nar'Sie! The summoning can only take place in [english_list(summon_objective.summon_spots)]!"
 			if(icon_state == "runed_sense1")
 				return
 			animate(src, transform = null, time = 1, loop = 0)
@@ -585,7 +585,7 @@ so as to remain in compliance with the most up-to-date laws."
 	if(!istype(L) || !L.can_resist())
 		return
 	L.changeNext_move(CLICK_CD_RESIST)
-	if((L.canmove) && (L.last_special <= world.time))
+	if((L.mobility_flags & MOBILITY_MOVE) && (L.last_special <= world.time))
 		return L.resist_restraints()
 
 /obj/screen/alert/restrained/buckled/Click()

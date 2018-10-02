@@ -177,7 +177,7 @@
 		M.SetSleeping(0)
 		M.stuttering += 20
 		M.adjustEarDamage(0, 30)
-		M.Knockdown(60)
+		M.Paralyze(60)
 		if(prob(30))
 			M.Stun(200)
 			M.Unconscious(80)
@@ -293,7 +293,7 @@
 	name = "\improper SRM-8 missile rack"
 	desc = "A weapon for combat exosuits. Shoots light explosive missiles."
 	icon_state = "mecha_missilerack"
-	projectile = /obj/item/projectile/bullet/srmrocket
+	projectile = /obj/item/projectile/bullet/a84mm_he
 	fire_sound = 'sound/weapons/grenadelaunch.ogg'
 	projectiles = 8
 	projectile_energy_cost = 1000

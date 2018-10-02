@@ -164,7 +164,7 @@
 	..()
 
 /mob/living/simple_animal/drone/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/screwdriver) && stat == DEAD)
+	if(I.tool_behaviour == TOOL_SCREWDRIVER && stat == DEAD)
 		try_reactivate(user)
 	else
 		..()
@@ -207,37 +207,6 @@
 	else
 		icon_state = "[visualAppearence]_dead"
 
-/mob/living/simple_animal/drone/cogscarab/Stun(amount, updating = 1, ignore_canstun = 0)
+/mob/living/simple_animal/drone/cogscarab/update_mobility()
 	. = ..()
-	if(.)
-		update_icons()
-
-/mob/living/simple_animal/drone/cogscarab/SetStun(amount, updating = 1, ignore_canstun = 0)
-	. = ..()
-	if(.)
-		update_icons()
-
-/mob/living/simple_animal/drone/cogscarab/AdjustStun(amount, updating = 1, ignore_canstun = 0)
-	. = ..()
-	if(.)
-		update_icons()
-
-/mob/living/simple_animal/drone/cogscarab/Knockdown(amount, updating = 1, ignore_canknockdown = 0)
-	. = ..()
-	if(.)
-		update_icons()
-
-/mob/living/simple_animal/drone/cogscarab/SetKnockdown(amount, updating = 1, ignore_canknockdown = 0)
-	. = ..()
-	if(.)
-		update_icons()
-
-/mob/living/simple_animal/drone/cogscarab/AdjustKnockdown(amount, updating = 1, ignore_canknockdown = 0)
-	. = ..()
-	if(.)
-		update_icons()
-
-/mob/living/simple_animal/drone/cogscarab/update_canmove()
-	. = ..()
-	if(.)
-		update_icons()
+	update_icons()

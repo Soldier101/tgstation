@@ -21,7 +21,7 @@
 	if(bartender_check(target) && ranged)
 		return
 	var/obj/item/broken_bottle/B = new (loc)
-	if(!ranged)
+	if(!ranged && thrower)
 		thrower.put_in_hands(B)
 	B.icon_state = icon_state
 
@@ -92,7 +92,7 @@
 	var/head_attack_message = ""
 	if(affecting == BODY_ZONE_HEAD && istype(target, /mob/living/carbon/))
 		head_attack_message = " on the head"
-		//Knockdown the target for the duration that we calculated and divide it by 5.
+		//Paralyze the target for the duration that we calculated and divide it by 5.
 		if(armor_duration)
 			target.apply_effect(min(armor_duration, 200) , EFFECT_KNOCKDOWN) // Never knockdown more than a flash!
 
@@ -424,11 +424,8 @@
 
 /obj/item/reagent_containers/food/drinks/bottle/molotov/attackby(obj/item/I, mob/user, params)
 	if(I.is_hot() && !active)
-		active = 1
-		var/message = "[ADMIN_LOOKUP(user)] has primed a [name] for detonation at [ADMIN_VERBOSEJMP(user)]."
-		GLOB.bombers += message
-		message_admins(message)
-		log_game("[key_name(user)] has primed a [name] for detonation at [AREACOORD(user)].")
+		active = TRUE
+		log_bomber(user, "has primed a", src, "for detonation")
 
 		to_chat(user, "<span class='info'>You light [src] on fire.</span>")
 		add_overlay(GLOB.fire_overlay)

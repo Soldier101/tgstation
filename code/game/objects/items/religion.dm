@@ -30,7 +30,7 @@
 	"<span class='notice'>You raise [src] skywards, inspiring your allies!</span>")
 	playsound(src, "rustle", 100, FALSE)
 	if(warcry)
-		user.say("[warcry]")
+		user.say("[warcry]", forced="banner")
 	var/old_transform = user.transform
 	user.transform *= 1.2
 	animate(user, transform = old_transform, time = 10)
@@ -66,6 +66,8 @@
 	H.adjustFireLoss(-15)
 	H.AdjustStun(-40)
 	H.AdjustKnockdown(-40)
+	H.AdjustImmobilized(-40)
+	H.AdjustParalyzed(-40)
 	H.AdjustUnconscious(-40)
 	playsound(H, 'sound/magic/staff_healing.ogg', 25, FALSE)
 

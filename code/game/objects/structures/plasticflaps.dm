@@ -87,7 +87,7 @@
 			return 1
 		if(M.buckled && istype(M.buckled, /mob/living/simple_animal/bot/mulebot)) // mulebot passenger gets a free pass.
 			return 1
-		if(!M.lying && !M.ventcrawler && M.mob_size != MOB_SIZE_TINY)	//If your not laying down, or a ventcrawler or a small creature, no pass.
+		if((M.mobility_flags & MOBILITY_STAND) && !M.ventcrawler && M.mob_size != MOB_SIZE_TINY)	//If your not laying down, or a ventcrawler or a small creature, no pass.
 			return 0
 	return ..()
 
@@ -97,8 +97,8 @@
 	qdel(src)
 
 /obj/structure/plasticflaps/Initialize()
- 	. = ..()
- 	air_update_turf(TRUE)
+	. = ..()
+	air_update_turf(TRUE)
 
 /obj/structure/plasticflaps/Destroy()
 	var/atom/oldloc = loc

@@ -1025,9 +1025,9 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 		return TRUE
 
 	if(radiation > RAD_MOB_KNOCKDOWN && prob(RAD_MOB_KNOCKDOWN_PROB))
-		if(!H.IsKnockdown())
+		if(!H.IsParalyzed())
 			H.emote("collapse")
-		H.Knockdown(RAD_MOB_KNOCKDOWN_AMOUNT)
+		H.Paralyze(RAD_MOB_KNOCKDOWN_AMOUNT)
 		to_chat(H, "<span class='danger'>You feel weak.</span>")
 
 	if(radiation > RAD_MOB_VOMIT && prob(RAD_MOB_VOMIT_PROB))
@@ -1142,7 +1142,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	if(target.health >= 0 && !(target.has_trait(TRAIT_FAKEDEATH)))
 		target.help_shake_act(user)
 		if(target != user)
-			log_combat(user, target, "shaked")
+			log_combat(user, target, "shaken")
 		return 1
 	else
 		var/we_breathe = !user.has_trait(TRAIT_NOBREATH)
@@ -1181,7 +1181,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 	else
 
 		var/atk_verb = user.dna.species.attack_verb
-		if(target.lying)
+		if(!(target.mobility_flags & MOBILITY_STAND))
 			atk_verb = "kick"
 
 		switch(atk_verb)
@@ -1212,6 +1212,9 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 		target.visible_message("<span class='danger'>[user] has [atk_verb]ed [target]!</span>", \
 					"<span class='userdanger'>[user] has [atk_verb]ed [target]!</span>", null, COMBAT_MESSAGE_RANGE)
 
+		target.lastattacker = user.real_name
+		target.lastattackerckey = user.ckey
+
 		if(user.limb_destroyer)
 			target.dismembering_strike(user, affecting.body_zone)
 		target.apply_damage(damage, BRUTE, affecting, armor_block)
@@ -1221,7 +1224,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 							"<span class='userdanger'>[user] has knocked [target] down!</span>", null, COMBAT_MESSAGE_RANGE)
 			target.apply_effect(80, EFFECT_KNOCKDOWN, armor_block)
 			target.forcesay(GLOB.hit_appends)
-		else if(target.lying)
+		else if(!(target.mobility_flags & MOBILITY_STAND))
 			target.forcesay(GLOB.hit_appends)
 
 /datum/species/proc/disarm(mob/living/carbon/human/user, mob/living/carbon/human/target, datum/martial_art/attacker_style)
@@ -1288,6 +1291,7 @@ GLOBAL_LIST_EMPTY(roundstart_races)
 		log_combat(M, H, "attempted to touch")
 		H.visible_message("<span class='warning'>[M] attempted to touch [H]!</span>")
 		return 0
+	SEND_SIGNAL(M, COMSIG_MOB_ATTACK_HAND, M, H, attacker_style)
 	switch(M.a_intent)
 		if("help")
 			help(M, H, attacker_style)

@@ -110,6 +110,10 @@
 		if(EFFECT_JITTER)
 			if((status_flags & CANSTUN) && !has_trait(TRAIT_STUNIMMUNE))
 				jitteriness = max(jitteriness,(effect * hit_percent))
+		if(EFFECT_PARALYZE)
+			Paralyze(effect * hit_percent)
+		if(EFFECT_IMMOBILIZE)
+			Immobilize(effect * hit_percent)
 	return 1
 
 

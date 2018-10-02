@@ -49,8 +49,6 @@
 	var/datum/action/item_action/toggle_gunlight/alight
 	var/mutable_appearance/flashlight_overlay
 
-	var/list/upgrades = list()
-
 	var/ammo_x_offset = 0 //used for positioning ammo count overlay on sprite
 	var/ammo_y_offset = 0
 	var/flight_x_offset = 0
@@ -349,7 +347,7 @@
 		knife_overlay.pixel_x = knife_x_offset
 		knife_overlay.pixel_y = knife_y_offset
 		add_overlay(knife_overlay, TRUE)
-	else if(istype(I, /obj/item/screwdriver))
+	else if(I.tool_behaviour == TOOL_SCREWDRIVER)
 		if(gun_light)
 			var/obj/item/flashlight/seclite/S = gun_light
 			to_chat(user, "<span class='notice'>You unscrew the seclite from \the [src].</span>")

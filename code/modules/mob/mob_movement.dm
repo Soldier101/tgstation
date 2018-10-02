@@ -1,14 +1,17 @@
 /mob/CanPass(atom/movable/mover, turf/target)
+	return TRUE				//There's almost no cases where non /living mobs should be used in game as actual mobs, other than ghosts.
+
+/mob/living/CanPass(atom/movable/mover, turf/target)
 	if((mover.pass_flags & PASSMOB))
 		return TRUE
 	if(istype(mover, /obj/item/projectile) || mover.throwing)
-		return (!density || lying)
+		return (!density || !(mobility_flags & MOBILITY_STAND))
 	if(buckled == mover)
 		return TRUE
 	if(ismob(mover))
 		if (mover in buckled_mobs)
 			return TRUE
-	return (!mover.density || !density || lying)
+	return (!mover.density || !density || !(mobility_flags & MOBILITY_STAND))
 
 //DO NOT USE THIS UNLESS YOU ABSOLUTELY HAVE TO. THIS IS BEING PHASED OUT FOR THE MOVESPEED MODIFICATION SYSTEM.
 //See mob_movespeed.dm
@@ -75,7 +78,7 @@
 	if(mob.buckled)							//if we're buckled to something, tell it we moved.
 		return mob.buckled.relaymove(mob, direct)
 
-	if(!mob.canmove)
+	if(!(L.mobility_flags & MOBILITY_MOVE))
 		return FALSE
 
 	if(isobj(mob.loc) || ismob(mob.loc))	//Inside an object, tell it we moved
@@ -90,7 +93,6 @@
 		move_delay = old_move_delay
 	else
 		move_delay = world.time
-	var/oldloc = mob.loc
 
 	if(L.confused)
 		var/newdir = 0
@@ -108,18 +110,14 @@
 
 	if((direct & (direct - 1)) && mob.loc == n) //moved diagonally successfully
 		add_delay *= 2
-	if(mob.loc != oldloc)
-		move_delay += add_delay
+	move_delay += add_delay
 	if(.) // If mob is null here, we deserve the runtime
 		if(mob.throwing)
 			mob.throwing.finalize(FALSE)
 
-	for(var/obj/O in mob.user_movement_hooks)
-		O.intercept_user_move(direct, mob, n, oldloc)
-
 	var/atom/movable/P = mob.pulling
 	if(P && !ismob(P) && P.density)
-		mob.dir = turn(mob.dir, 180)
+		mob.setDir(turn(mob.dir, 180))
 
 ///Process_Grab()
 ///Called by client/Move()

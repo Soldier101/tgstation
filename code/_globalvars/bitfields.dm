@@ -164,4 +164,15 @@ GLOBAL_LIST_INIT(bitfields, list(
 		"TRANSPARENT" = TRANSPARENT,
 		"AMOUNT_VISIBLE" = AMOUNT_VISIBLE,
 		),
+	"mobility_flags" = list(
+		"MOVE" = MOBILITY_MOVE,
+		"STAND" = MOBILITY_STAND,
+		"PICKUP" = MOBILITY_PICKUP,
+		"USE" = MOBILITY_USE,
+		"UI" = MOBILITY_UI,
+		"STORAGE" = MOBILITY_STORAGE
+		),
+	"car_traits" = list(
+		"CAN_KIDNAP" = CAN_KIDNAP,
+		)
 	))
