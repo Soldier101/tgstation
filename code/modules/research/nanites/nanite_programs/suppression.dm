@@ -55,7 +55,7 @@
 	if(!..())
 		return
 	playsound(host_mob, "sparks", 75, 1, -1)
-	host_mob.Knockdown(80)
+	host_mob.Paralyze(80)
 
 /datum/nanite_program/pacifying
 	name = "Pacification"
@@ -147,7 +147,7 @@
 	if(host_mob.stat == DEAD)
 		return
 	to_chat(host_mob, "<span class='warning'>You feel compelled to speak...</span>")
-	host_mob.say(sentence)
+	host_mob.say(sentence, forced = "nanite speech")
 
 /datum/nanite_program/triggered/voice
 	name = "Skull Echo"

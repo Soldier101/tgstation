@@ -4,7 +4,7 @@
 	mood_change = -4
 
 /datum/mood_event/wellfed
-	description = "<span class='nicegreen'>My belly feels round and full.</span>\n"
+	description = "<span class='nicegreen'>I'm stuffed!</span>\n"
 	mood_change = 6
 
 /datum/mood_event/fed
@@ -31,6 +31,14 @@
 /datum/mood_event/disgusted
 	description = "<span class='boldwarning'>Oh god that's disgusting...</span>\n"
 	mood_change = -8
+
+/datum/mood_event/disgust/bad_smell
+	description = "<span class='warning'>You smell something horribly decayed inside this room.</span>\n"
+	mood_change = -3
+
+/datum/mood_event/disgust/nauseating_stench
+	description = "<span class='warning'>The stench of rotting carcasses is unbearable!</span>\n"
+	mood_change = -7
 
 //Generic needs events
 /datum/mood_event/favorite_food

@@ -24,7 +24,6 @@
 	shuttleId = "whiteship"
 	lock_override = NONE
 	shuttlePortId = "whiteship_custom"
-	shuttlePortName = "Custom Location"
 	jumpto_ports = list("whiteship_away" = 1, "whiteship_home" = 1, "whiteship_z4" = 1)
 	view_range = 18
 	x_offset = -6
@@ -36,7 +35,6 @@
 	desc = "Used to designate a precise transit location for the Salvage Pod."
 	shuttleId = "whiteship_pod"
 	shuttlePortId = "whiteship_pod_custom"
-	shuttlePortName = "Custom Location"
 	jumpto_ports = list("whiteship_pod_home" = 1)
 	view_range = 7
 	x_offset = -2
@@ -46,6 +44,12 @@
 /obj/machinery/computer/camera_advanced/shuttle_docker/whiteship/Initialize()
 	. = ..()
 	GLOB.jam_on_wardec += src
+	for(var/V in SSshuttle.stationary)
+		if(!V)
+			continue
+		var/obj/docking_port/stationary/S = V
+		if(jumpto_ports[S.id])
+			z_lock |= S.z
 
 /obj/machinery/computer/camera_advanced/shuttle_docker/whiteship/Destroy()
 	GLOB.jam_on_wardec -= src

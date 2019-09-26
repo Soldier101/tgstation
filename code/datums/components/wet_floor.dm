@@ -86,9 +86,7 @@
 			qdel(parent.GetComponent(/datum/component/slippery))
 			return
 
-	var/datum/component/slippery/S = parent.LoadComponent(/datum/component/slippery, NONE, CALLBACK(src, .proc/AfterSlip))
-	S.intensity = intensity
-	S.lube_flags = lube_flags
+	parent.LoadComponent(/datum/component/slippery, intensity, lube_flags, CALLBACK(src, .proc/AfterSlip))
 
 /datum/component/wet_floor/proc/dry(datum/source, strength = TURF_WET_WATER, immediate = FALSE, duration_decrease = INFINITY)
 	for(var/i in time_left_list)
@@ -120,8 +118,8 @@
 			if(O.obj_flags & FROZEN)
 				O.make_unfrozen()
 		add_wet(TURF_WET_WATER, max_time_left())
-		dry(TURF_WET_ICE)
-	dry(ALL, FALSE, decrease)
+		dry(null, TURF_WET_ICE)
+	dry(null, ALL, FALSE, decrease)
 	check()
 	last_process = world.time
 

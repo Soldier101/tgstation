@@ -12,8 +12,6 @@
 #define TRAIT_MONKEYLIKE		"monkeylike" //sets IsAdvancedToolUser to FALSE
 #define TRAIT_PACIFISM			"pacifism"
 #define TRAIT_IGNORESLOWDOWN	"ignoreslow"
-#define TRAIT_GOTTAGOFAST		"fast"
-#define TRAIT_GOTTAGOREALLYFAST	"2fast"
 #define TRAIT_DEATHCOMA			"deathcoma" //Causes death-like unconsciousness
 #define TRAIT_FAKEDEATH			"fakedeath" //Makes the owner appear as dead to most forms of medical examination
 #define TRAIT_DISFIGURED		"disfigured"
@@ -50,6 +48,16 @@
 #define TRAIT_NOHARDCRIT		"nohardcrit"
 #define TRAIT_NOSOFTCRIT		"nosoftcrit"
 #define TRAIT_MINDSHIELD		"mindshield"
+#define TRAIT_DISSECTED			"dissected"
+#define TRAIT_SIXTHSENSE		"sixth_sense" //I can hear dead people
+#define TRAIT_FEARLESS			"fearless"
+#define TRAIT_PARALYSIS_L_ARM	"para-l-arm" //These are used for brain-based paralysis, where replacing the limb won't fix it
+#define TRAIT_PARALYSIS_R_ARM	"para-r-arm"
+#define TRAIT_PARALYSIS_L_LEG	"para-l-leg"
+#define TRAIT_PARALYSIS_R_LEG	"para-r-leg"
+
+//non-mob traits
+#define TRAIT_PARALYSIS			"paralysis" //Used for limb-based paralysis, where replacing the limb will fix it
 
 
 #define TRAIT_ALCOHOL_TOLERANCE	"alcohol_tolerance"
@@ -65,6 +73,9 @@
 #define TRAIT_POOR_AIM			"poor_aim"
 #define TRAIT_PROSOPAGNOSIA		"prosopagnosia"
 #define	TRAIT_DRUNK_HEALING		"drunk_healing"
+#define	TRAIT_TAGGER			"tagger"
+#define	TRAIT_PHOTOGRAPHER		"photographer"
+#define	TRAIT_MUSICIAN			"musician"
 
 // common trait sources
 #define TRAIT_GENERIC "generic"
@@ -87,3 +98,4 @@
 #define STASIS_MUTE "stasis"
 #define GENETICS_SPELL "genetics_spell"
 #define EYES_COVERED "eyes_covered"
+#define CULT_EYES "cult_eyes"

@@ -15,14 +15,14 @@
 	playsound(D, 'sound/effects/meteorimpact.ogg', 25, 1, -1)
 	var/throwtarget = get_edge_target_turf(A, get_dir(A, get_step_away(D, A)))
 	D.throw_at(throwtarget, 4, 2, A)//So stuff gets tossed around at the same time.
-	D.Knockdown(20)
+	D.Paralyze(20)
 	if(atk_verb)
 		log_combat(A, D, "[atk_verb] (Mushroom Punch)")
 	return TRUE
 
 /obj/item/mushpunch
 	name = "odd mushroom"
-	desc = "<I>Sapienza Ophioglossoides</I>:An odd mushroom from the flesh of a mushroom person. it has apparently retained some innate power of it's owner, as it quivers with barely-contained POWER!"
+	desc = "<I>Sapienza Ophioglossoides</I>:An odd mushroom from the flesh of a mushroom person. It has apparently retained some innate power of its owner, as it quivers with barely-contained POWER!"
 	icon = 'icons/obj/hydroponics/seeds.dmi'
 	icon_state = "mycelium-angel"
 

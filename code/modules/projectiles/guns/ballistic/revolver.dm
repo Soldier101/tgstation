@@ -70,9 +70,9 @@
 		chamber_round(0)
 
 /obj/item/gun/ballistic/revolver/can_shoot()
-	return get_ammo(0,0)
+	return get_ammo(FALSE, FALSE)
 
-/obj/item/gun/ballistic/revolver/get_ammo(countchambered = 0, countempties = 1)
+/obj/item/gun/ballistic/revolver/get_ammo(countchambered = FALSE, countempties = TRUE)
 	var/boolets = 0 //mature var names for mature people
 	if (chambered && countchambered)
 		boolets++
@@ -82,7 +82,8 @@
 
 /obj/item/gun/ballistic/revolver/examine(mob/user)
 	..()
-	to_chat(user, "[get_ammo(0,0)] of those are live rounds.")
+	var/live_ammo = get_ammo(FALSE, FALSE)
+	to_chat(user, "[live_ammo ? live_ammo : "None"] of those are live rounds.")
 
 /obj/item/gun/ballistic/revolver/detective
 	name = "\improper .38 Mars Special"
@@ -257,6 +258,9 @@
 	desc = "A true classic."
 	icon_state = "dshotgun"
 	item_state = "shotgun"
+	fire_sound = 'sound/weapons/shotgunshot.ogg'
+	vary_fire_sound = FALSE
+	fire_sound_volume = 90
 	w_class = WEIGHT_CLASS_BULKY
 	weapon_weight = WEAPON_MEDIUM
 	force = 10
@@ -357,4 +361,4 @@
 		user.visible_message("<span class='warning'>[user] somehow manages to shoot [user.p_them()]self in the face!</span>", "<span class='userdanger'>You somehow shoot yourself in the face! How the hell?!</span>")
 		user.emote("scream")
 		user.drop_all_held_items()
-		user.Knockdown(80)
+		user.Paralyze(80)
