@@ -150,6 +150,10 @@
 						pickupTarget = null
 						pickupTimer = 0
 					else if(ismob(pickupTarget.loc)) // in someones hand
+						if(istype(pickupTarget,/obj/item/mob_holder/))
+							var/obj/item/mob_holder/H = pickupTarget
+							if(H && H.held_mob == src)
+								return //Don't let them pickpocket themselves
 						var/mob/M = pickupTarget.loc
 						if(!pickpocketing)
 							pickpocketing = TRUE
@@ -397,7 +401,7 @@
 /mob/living/carbon/monkey/bullet_act(obj/item/projectile/Proj)
 	if(istype(Proj , /obj/item/projectile/beam)||istype(Proj, /obj/item/projectile/bullet))
 		if((Proj.damage_type == BURN) || (Proj.damage_type == BRUTE))
-			if(!Proj.nodamage && Proj.damage < src.health)
+			if(!Proj.nodamage && Proj.damage < src.health && isliving(Proj.firer))
 				retaliate(Proj.firer)
 	..()
 
